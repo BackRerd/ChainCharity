@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.backrer.backed.mapper.ActivityCategoriesMapper">
+
+    <resultMap id="BaseResultMap" type="site.backrer.backed.entity.ActivityCategories">
+            <id property="categoryId" column="category_id" />
+            <result property="categoryName" column="category_name" />
+            <result property="description" column="description" />
+            <result property="createdBy" column="created_by" />
+            <result property="createdAt" column="created_at" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        category_id,category_name,description,created_by,created_at
+    </sql>
+</mapper>

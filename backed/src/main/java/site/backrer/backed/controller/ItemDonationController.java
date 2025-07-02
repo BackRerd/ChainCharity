@@ -1,0 +1,60 @@
+package site.backrer.backed.controller;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import site.backrer.backed.entity.ItemDonations;
+import site.backrer.backed.service.ItemDonationsService;
+import site.backrer.backed.utils.Result;
+
+@RestController
+@RequestMapping("/item-donations")
+public class ItemDonationController {
+    @Autowired
+    private ItemDonationsService donationService;
+    /**
+     * 提交物品捐赠
+     * 请求示例：
+     * POST /item-donations
+     * {
+     *   "activityId": 1,           // 活动ID
+     *   "donorId": 2,               // 捐赠者ID
+     *   "itemType": "书本",          // 物品类型
+     *   "quantity": 100,            // 数量（整数）
+     *   "imagePath": "/uploads/books.jpg"  // 图片路径（可选）
+     * }
+     */
+    @PostMapping
+    public Result addItemDonation(@RequestBody ItemDonations donation) {
+        donationService.save(donation);
+        return Result.success(donation);
+    }
+
+    @DeleteMapping("/{id}")
+    public Result deleteItemDonation(@PathVariable Integer id) {
+        donationService.removeById(id);
+        return Result.success();
+    }
+
+    @PutMapping
+    public Result updateItemDonation(@RequestBody ItemDonations donation) {
+        donationService.updateById(donation);
+        return Result.success(donation);
+    }
+
+    @GetMapping("/{id}")
+    public Result getItemDonationById(@PathVariable Integer id) {
+        ItemDonations donation = donationService.getById(id);
+        if (donation != null) {
+            return Result.success(donation);
+        }
+        return Result.error("404", "捐赠记录不存在");
+    }
+
+    @GetMapping("/page")
+    public Result getItemDonationByPage(@RequestParam(defaultValue = "1") int page,
+                                        @RequestParam(defaultValue = "10") int size) {
+        Page<ItemDonations> pageInfo = new Page<>(page, size);
+        return Result.success(donationService.page(pageInfo));
+    }
+}
