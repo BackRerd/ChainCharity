@@ -11,7 +11,9 @@
     <div class="auth-card">
       <div class="auth-header">
         <div class="logo">
-          <i class="el-icon-user-solid"></i>
+          <svg viewBox="0 0 24 24" class="heart-icon">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
         </div>
         <h1>爱心慈善平台</h1>
         <p>让爱心传递，让温暖延续</p>
@@ -79,6 +81,36 @@ export default {
 </script>
 
 <style scoped>
+.logo {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ff5a5f;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(255, 90, 95, 0.3);
+}
+
+.heart-icon {
+  width: 30px;
+  height: 30px;
+  fill: white;
+}
+
+/* 添加心跳动画效果 */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.1); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.logo:hover .heart-icon {
+  animation: heartbeat 1s infinite;
+}
 .auth-container {
   position: relative;
   height: 100vh;

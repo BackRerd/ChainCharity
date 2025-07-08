@@ -1,11 +1,16 @@
 package site.backrer.backed.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import site.backrer.backed.entity.ItemDonations;
+import site.backrer.backed.entity.MoneyDonations;
 import site.backrer.backed.service.ItemDonationsService;
 import site.backrer.backed.utils.Result;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/item-donations")
@@ -53,8 +58,18 @@ public class ItemDonationController {
 
     @GetMapping("/page")
     public Result getItemDonationByPage(@RequestParam(defaultValue = "1") int page,
-                                        @RequestParam(defaultValue = "10") int size) {
+                                        @RequestParam(defaultValue = "10") int size,
+                                        @RequestParam(required = false) String userId) {
+        QueryWrapper<ItemDonations> queryWrapper = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(userId)){
+            queryWrapper.eq("donor_id", userId);
+        }
         Page<ItemDonations> pageInfo = new Page<>(page, size);
-        return Result.success(donationService.page(pageInfo));
+        return Result.success(donationService.page(pageInfo, queryWrapper));
+    }
+    @GetMapping("/stats")
+    public Result getDonationStats() {
+        Map<String, Object> stats = donationService.getStats();
+        return Result.success(stats);
     }
 }

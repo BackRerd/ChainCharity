@@ -1,17 +1,30 @@
 package site.backrer.backed.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import site.backrer.backed.entity.ActivityParticipation;
+import site.backrer.backed.entity.MoneyDonateStats;
 import site.backrer.backed.entity.MoneyDonations;
+import site.backrer.backed.mapper.MoneyDonationsMapper;
 import site.backrer.backed.service.MoneyDonationsService;
 import site.backrer.backed.utils.Result;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/money-donations")
 public class MoneyDonationController {
     @Autowired
     private MoneyDonationsService donationService;
+    @Autowired
+    private MoneyDonationsMapper moneyDonationsMapper;
+
     /**
      * 提交资金捐赠
      * 请求示例：
@@ -48,12 +61,26 @@ public class MoneyDonationController {
         }
         return Result.error("404", "捐赠记录不存在");
     }
+    @GetMapping("/stats")
+    public Result getMoneyDonationStats() {
+        MoneyDonateStats moneyDonateStats = new MoneyDonateStats();
+        moneyDonateStats.setTotalAmount(donationService.amountSum());
+        moneyDonateStats.setApprovedCount(donationService.approvedCount());
+        moneyDonateStats.setRejectedCount(donationService.rejectedCount());
+        moneyDonateStats.setPendingCount(donationService.pendingCount());
+        return Result.success(moneyDonateStats);
+    }
 
     @GetMapping("/page")
     public Result getMoneyDonationByPage(@RequestParam(defaultValue = "1") int page,
-                                         @RequestParam(defaultValue = "10") int size) {
+                                         @RequestParam(defaultValue = "10") int size,
+                                         @RequestParam(required = false) String userId) {
+        QueryWrapper<MoneyDonations> queryWrapper = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(userId)){
+            queryWrapper.eq("donor_id", userId);
+        }
         Page<MoneyDonations> pageInfo = new Page<>(page, size);
-        return Result.success(donationService.page(pageInfo));
+        return Result.success(donationService.page(pageInfo,queryWrapper));
     }
 }
 

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-form :model="form" ref="loginFormRef" @submit.prevent="login">
+    <el-form :model="form" ref="loginFormRef" @submit.prevent="login" :rules="rules">
       <el-form-item prop="username">
         <el-input
             v-model="form.username"
             placeholder="请输入用户名"
-            prefix-icon="el-icon-user"
+            :prefix-icon="UserIcon"
             size="large"
         >
         </el-input>
@@ -16,7 +16,7 @@
             v-model="form.password"
             type="password"
             placeholder="请输入密码"
-            prefix-icon="el-icon-lock"
+            :prefix-icon="LockIcon"
             show-password
             size="large"
         >
@@ -48,24 +48,34 @@
         <span>其他登录方式</span>
       </div>
       <div class="social-icons">
-        <div class="social-icon icon-google">
-          <i class="el-icon-mobile-phone"></i>
+        <div class="social-icon icon-qq">
+          <el-icon><qq-icon /></el-icon>
         </div>
-        <div class="social-icon icon-facebook">
-          <i class="el-icon-chat-dot-round"></i>
+        <div class="social-icon icon-wechat">
+          <el-icon><wechat-icon /></el-icon>
         </div>
-        <div class="social-icon icon-twitter">
-          <i class="el-icon-chat-line-round"></i>
+        <div class="social-icon icon-mobile">
+          <el-icon><mobile-icon /></el-icon>
         </div>
       </div>
     </div>
   </div>
 </template>
 
+
 <script setup>
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
+import {
+  User as UserIcon,
+  Lock as LockIcon,
+  Iphone as MobileIcon
+} from '@element-plus/icons-vue'
+// 导入QQ和微信图标（Element Plus可能没有内置，需要自定义或使用其他图标库）
+import QqIcon from '@/assets/icons/QqIcon.vue'
+import WechatIcon from '@/assets/icons/WechatIcon.vue'
+import axios from "axios";
 
 const emit = defineEmits(['switch-form'])
 const router = useRouter()
@@ -75,20 +85,52 @@ const form = ref({
   password: ''
 })
 
+const rules = {
+  username: [
+    { required: true, message: '请输入用户名或邮箱', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, message: '密码长度不能少于6位', trigger: 'blur' }
+  ]
+}
+
 const login = () => {
   if (!form.value.username || !form.value.password) {
     ElMessage.error('请输入用户名和密码')
     return
   }
+  axios.post('/api/auth/login',form.value).then(res => {
+    if (res.data.code === "200") {
+      localStorage.setItem('token', res.data.data)
+      autoLogin()
+    }else {
+      console.log(res.data)
+      ElMessage.error(res.data.message)
+    }
+  })
 
-  // 模拟登录成功
-  localStorage.setItem('isAuthenticated', 'true')
-  ElMessage.success('登录成功！')
 
-  // 跳转到首页
-  router.push('/')
 }
+const autoLogin = () => {
+  const item = localStorage.getItem('token');
+  if (item !== null){
+    axios.get(`/api/auth/token?token=${item}`).then(res => {
+      if (res.data.code === "200") {
+        localStorage.setItem('user', JSON.stringify(res.data.data))
+        console.log(res.data.data)
+        ElMessage.success('登录成功！')
+        if (res.data.data.role === 0){
+          router.push('/user')
+        }else {
+          router.push('/admin')
+        }
 
+      }
+    })
+  }
+}
+autoLogin()
 const forgotPassword = () => {
   ElMessage.info('密码重置功能正在开发中')
 }
@@ -206,6 +248,21 @@ const forgotPassword = () => {
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
+.icon-qq {
+  background: linear-gradient(135deg, #12B7F5, #0084FF);
+}
+
+.icon-wechat {
+  background: linear-gradient(135deg, #07C160, #09BB07);
+}
+
+.icon-mobile {
+  background: linear-gradient(135deg, #9B59B6, #8E44AD);
+}
+
+.el-icon {
+  font-size: 24px;
+}
 .icon-google {
   background: linear-gradient(135deg, #4285f4, #34a853);
 }

@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import site.backrer.backed.entity.Activities;
+import site.backrer.backed.entity.ViewActivitiesWithCategory;
 import site.backrer.backed.service.ActivitiesService;
+import site.backrer.backed.service.ViewActivitiesWithCategoryService;
 import site.backrer.backed.utils.Result;
 
 @RestController

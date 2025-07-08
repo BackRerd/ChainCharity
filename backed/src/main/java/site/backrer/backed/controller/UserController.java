@@ -63,6 +63,7 @@ public class UserController {
     public Result getUserById(@PathVariable Integer id) {
         Users user = userService.getById(id);
         if (user != null) {
+            user.setPassword(null);
             return Result.success(user);
         }
         return Result.error("404", "用户不存在");

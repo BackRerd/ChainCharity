@@ -1,31 +1,22 @@
 <template>
   <div>
     <el-form :model="form" ref="registerFormRef" @submit.prevent="register">
-      <el-form-item prop="name">
+      <el-form-item prop="username">
         <el-input
-            v-model="form.name"
+            v-model="form.username"
             placeholder="请输入姓名"
-            prefix-icon="el-icon-user"
+            :prefix-icon="UserIcon"
             size="large"
         >
         </el-input>
       </el-form-item>
 
-      <el-form-item prop="email">
-        <el-input
-            v-model="form.email"
-            placeholder="请输入邮箱"
-            prefix-icon="el-icon-message"
-            size="large"
-        >
-        </el-input>
-      </el-form-item>
 
       <el-form-item prop="phone">
         <el-input
             v-model="form.phone"
             placeholder="请输入手机号"
-            prefix-icon="el-icon-mobile-phone"
+            :prefix-icon="IphoneIcon"
             size="large"
         >
         </el-input>
@@ -36,7 +27,7 @@
             v-model="form.password"
             type="password"
             placeholder="设置密码"
-            prefix-icon="el-icon-lock"
+            :prefix-icon="LockIcon"
             show-password
             size="large"
         >
@@ -48,7 +39,7 @@
             v-model="form.confirmPassword"
             type="password"
             placeholder="确认密码"
-            prefix-icon="el-icon-lock"
+            :prefix-icon="LockIcon"
             show-password
             size="large"
         >
@@ -77,14 +68,14 @@
         <span>或使用以下方式注册</span>
       </div>
       <div class="social-icons">
-        <div class="social-icon icon-google">
-          <i class="el-icon-mobile-phone"></i>
+        <div class="social-icon icon-qq">
+          <el-icon><qq-icon /></el-icon>
         </div>
-        <div class="social-icon icon-facebook">
-          <i class="el-icon-chat-dot-round"></i>
+        <div class="social-icon icon-wechat">
+          <el-icon><wechat-icon /></el-icon>
         </div>
-        <div class="social-icon icon-twitter">
-          <i class="el-icon-chat-line-round"></i>
+        <div class="social-icon icon-mobile">
+          <el-icon><mobile-icon /></el-icon>
         </div>
       </div>
     </div>
@@ -95,28 +86,33 @@
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
+import {
+  User as UserIcon,
+  Lock as LockIcon,
+  Iphone as IphoneIcon,
+  Message as MessageIcon
+} from '@element-plus/icons-vue'
+import QqIcon from '@/assets/icons/QqIcon.vue'
+import WechatIcon from '@/assets/icons/WechatIcon.vue'
+import MobileIcon from '@/assets/icons/MobileIcon.vue'
+import axios from "axios";
 
 const emit = defineEmits(['switch-form'])
 const router = useRouter()
 
 const form = ref({
-  name: '',
-  email: '',
+  username: '',
   phone: '',
   password: '',
   confirmPassword: ''
 })
 
 const register = () => {
-  if (!form.value.name) {
+  if (!form.value.username) {
     ElMessage.error('请输入姓名')
     return
   }
 
-  if (!form.value.email) {
-    ElMessage.error('请输入邮箱')
-    return
-  }
 
   if (!form.value.phone) {
     ElMessage.error('请输入手机号')
@@ -133,11 +129,16 @@ const register = () => {
     return
   }
 
-  // 模拟注册成功
-  ElMessage.success('注册成功！')
+  axios.post('/api/auth/register', form.value).then(res => {
+    if (res.data.code === "200"){
+      ElMessage.success('注册成功！')
+      emit('switch-form', 'login')
+    }else {
+      ElMessage.error(res.data.data)
+    }
+  })
 
-  // 切换到登录表单
-  emit('switch-form', 'login')
+
 }
 </script>
 
@@ -200,5 +201,40 @@ const register = () => {
   display: flex;
   justify-content: center;
   gap: 15px;
+}
+
+.social-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.social-icon:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.icon-qq {
+  background: linear-gradient(135deg, #12B7F5, #0084FF);
+}
+
+.icon-wechat {
+  background: linear-gradient(135deg, #07C160, #09BB07);
+}
+
+.icon-mobile {
+  background: linear-gradient(135deg, #9B59B6, #8E44AD);
+}
+
+.el-icon {
+  font-size: 24px;
 }
 </style>

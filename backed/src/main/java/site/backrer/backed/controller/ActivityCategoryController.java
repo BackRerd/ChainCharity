@@ -1,5 +1,7 @@
 package site.backrer.backed.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,10 +43,24 @@ public class ActivityCategoryController {
     }
 
     @GetMapping("/page")
-    public Result getCategoryByPage(@RequestParam(defaultValue = "1") int page,
-                                    @RequestParam(defaultValue = "10") int size) {
+    public Result getCategoryByPage(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String categoryName,
+            @RequestParam(required = false) String description) {
+
+        QueryWrapper<ActivityCategories> queryWrapper = new QueryWrapper<>();
+
+        if (StringUtils.isNotBlank(categoryName)) {
+            queryWrapper.like("category_name", categoryName);
+        }
+
+        if (StringUtils.isNotBlank(description)) {
+            queryWrapper.like("description", description);
+        }
+
         Page<ActivityCategories> pageInfo = new Page<>(page, size);
-        return Result.success(categoryService.page(pageInfo));
+        return Result.success(categoryService.page(pageInfo, queryWrapper));
     }
 }
 

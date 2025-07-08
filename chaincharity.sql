@@ -142,16 +142,66 @@ CREATE TABLE `money_donations`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`  (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `is_admin` tinyint(1) NULL DEFAULT 0,
-  `user_status` enum('active','suspended','pending') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'pending',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`) USING BTREE,
-  UNIQUE INDEX `username`(`username`) USING BTREE,
-  UNIQUE INDEX `email`(`email`) USING BTREE
+                          `user_id` int(11) NOT NULL AUTO_INCREMENT,
+                          `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                          `password` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                          `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                          `is_admin` tinyint(1) NULL DEFAULT 0,
+                          `user_status` enum('active','suspended','pending') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'pending',
+                          `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                          PRIMARY KEY (`user_id`) USING BTREE,
+                          UNIQUE INDEX `username`(`username`) USING BTREE,
+                          UNIQUE INDEX `phone`(`phone`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+ALTER TABLE `users`
+    ADD COLUMN `user_type` enum('donor','recipient') NOT NULL COMMENT '捐赠者/受助者' AFTER `user_status`,
+    ADD COLUMN `is_enterprise` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否是企业' AFTER `user_type`;
+ALTER TABLE users ENGINE=InnoDB;
+CREATE TABLE `user_profiles` (
+                                 `profile_id` int(11) NOT NULL AUTO_INCREMENT,
+                                 `user_id` int(11) NOT NULL,
+                                 `user_type` enum('donor','recipient','enterprise') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 
+    -- 通用信息（所有用户类型共用）
+                                 `real_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '个人实名/企业名称',
+                                 `id_card_number` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '身份证号/统一社会信用代码',
+                                 `avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '头像/企业LOGO',
+
+    -- 个人用户信息（捐赠者/受助者）
+                                 `gender` enum('male','female','other') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+                                 `birth_date` date NULL,
+                                 `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+
+    -- 受助者专属字段
+                                 `bank_account` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '受助者银行卡号',
+                                 `bank_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+                                 `needs_description_file` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '需求说明文件URL',
+                                 `family_members` int(11) NULL COMMENT '家庭成员数',
+                                 `monthly_income` decimal(10,2) NULL COMMENT '月收入',
+                                 `poverty_level` enum('low','medium','high','extreme') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+
+    -- 企业专属字段
+                                 `legal_representative` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '企业法人',
+                                 `business_license` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '营业执照号',
+                                 `enterprise_type` enum('private','state-owned','foreign','joint-venture') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+                                 `industry` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+                                 `contact_person` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+                                 `contact_phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+
+    -- 企业角色标识（可捐赠/可受助）
+                                 `enterprise_role` set('can_donate','can_receive') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '企业可扮演角色',
+
+    -- 验证状态
+                                 `id_verified` tinyint(1) DEFAULT 0 COMMENT '实名认证状态',
+                                 `bank_verified` tinyint(1) DEFAULT 0 COMMENT '银行卡认证状态(受助者)',
+                                 `enterprise_verified` tinyint(1) DEFAULT 0 COMMENT '企业认证状态',
+
+                                 `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                 `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+                                 PRIMARY KEY (`profile_id`) USING BTREE,
+                                 UNIQUE INDEX `user_id`(`user_id`) USING BTREE,
+                                 UNIQUE INDEX `id_card_number`(`id_card_number`) USING BTREE,
+                                 CONSTRAINT `fk_profile_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci;
 SET FOREIGN_KEY_CHECKS = 1;

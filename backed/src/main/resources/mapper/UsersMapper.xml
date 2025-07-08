@@ -8,14 +8,16 @@
             <id property="userId" column="user_id" />
             <result property="username" column="username" />
             <result property="password" column="password" />
-            <result property="email" column="email" />
+            <result property="phone" column="phone" />
             <result property="isAdmin" column="is_admin" />
             <result property="userStatus" column="user_status" />
+            <result property="userType" column="user_type" />
+            <result property="isEnterprise" column="is_enterprise" />
             <result property="createdAt" column="created_at" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        user_id,username,password,email,is_admin,user_status,
-        created_at
+        user_id,username,password,phone,is_admin,user_status,
+        user_type,is_enterprise,created_at
     </sql>
 </mapper>

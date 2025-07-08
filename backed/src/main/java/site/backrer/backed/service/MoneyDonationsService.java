@@ -3,11 +3,16 @@ package site.backrer.backed.service;
 import site.backrer.backed.entity.MoneyDonations;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.math.BigDecimal;
+
 /**
 * @author JoBackRer
 * @description 针对表【money_donations】的数据库操作Service
 * @createDate 2025-06-30 08:31:27
 */
 public interface MoneyDonationsService extends IService<MoneyDonations> {
-
+    BigDecimal amountSum();
+    Long approvedCount();
+    Long pendingCount();
+    Long rejectedCount();
 }

@@ -69,32 +69,8 @@
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="Activities" />
-                  <option name="tableName" value="activities" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="ActivityCategories" />
-                  <option name="tableName" value="activity_categories" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="ActivityParticipation" />
-                  <option name="tableName" value="activity_participation" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="Distributions" />
-                  <option name="tableName" value="distributions" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="ItemDonations" />
-                  <option name="tableName" value="item_donations" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="MoneyDonations" />
-                  <option name="tableName" value="money_donations" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="Users" />
-                  <option name="tableName" value="users" />
+                  <option name="className" value="UserProfiles" />
+                  <option name="tableName" value="user_profiles" />
                 </TableUIInfo>
               </list>
             </option>
