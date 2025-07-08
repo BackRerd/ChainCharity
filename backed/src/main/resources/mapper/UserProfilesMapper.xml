@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.backrer.backed.mapper.UserProfilesMapper">
+
+    <resultMap id="BaseResultMap" type="site.backrer.backed.entity.UserProfiles">
+            <id property="profileId" column="profile_id" />
+            <result property="userId" column="user_id" />
+            <result property="userType" column="user_type" />
+            <result property="realName" column="real_name" />
+            <result property="idCardNumber" column="id_card_number" />
+            <result property="avatar" column="avatar" />
+            <result property="gender" column="gender" />
+            <result property="birthDate" column="birth_date" />
+            <result property="address" column="address" />
+            <result property="bankAccount" column="bank_account" />
+            <result property="bankName" column="bank_name" />
+            <result property="needsDescriptionFile" column="needs_description_file" />
+            <result property="familyMembers" column="family_members" />
+            <result property="monthlyIncome" column="monthly_income" />
+            <result property="povertyLevel" column="poverty_level" />
+            <result property="legalRepresentative" column="legal_representative" />
+            <result property="businessLicense" column="business_license" />
+            <result property="enterpriseType" column="enterprise_type" />
+            <result property="industry" column="industry" />
+            <result property="contactPerson" column="contact_person" />
+            <result property="contactPhone" column="contact_phone" />
+            <result property="enterpriseRole" column="enterprise_role" />
+            <result property="idVerified" column="id_verified" />
+            <result property="bankVerified" column="bank_verified" />
+            <result property="enterpriseVerified" column="enterprise_verified" />
+            <result property="createdAt" column="created_at" />
+            <result property="updatedAt" column="updated_at" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        profile_id,user_id,user_type,real_name,id_card_number,avatar,
+        gender,birth_date,address,bank_account,bank_name,
+        needs_description_file,family_members,monthly_income,poverty_level,legal_representative,
+        business_license,enterprise_type,industry,contact_person,contact_phone,
+        enterprise_role,id_verified,bank_verified,enterprise_verified,created_at,
+        updated_at
+    </sql>
+</mapper>

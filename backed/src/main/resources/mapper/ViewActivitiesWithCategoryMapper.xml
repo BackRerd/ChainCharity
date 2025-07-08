@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.backrer.backed.mapper.ViewActivitiesWithCategoryMapper">
+
+    <resultMap id="BaseResultMap" type="site.backrer.backed.entity.ViewActivitiesWithCategory">
+            <result property="activityId" column="activity_id" jdbcType="INTEGER"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+            <result property="categoryName" column="category_name" jdbcType="VARCHAR"/>
+            <result property="startDate" column="start_date" jdbcType="DATE"/>
+            <result property="endDate" column="end_date" jdbcType="DATE"/>
+            <result property="status" column="status" jdbcType="OTHER"/>
+            <result property="createdBy" column="created_by" jdbcType="INTEGER"/>
+            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        activity_id,title,description,
+        category_id,category_name,start_date,
+        end_date,status,created_by,
+        created_at
+    </sql>
+
+</mapper>
