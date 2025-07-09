@@ -69,8 +69,24 @@
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="UserProfiles" />
-                  <option name="tableName" value="user_profiles" />
+                  <option name="className" value="ForumAttachments" />
+                  <option name="tableName" value="forum_attachments" />
+                </TableUIInfo>
+                <TableUIInfo>
+                  <option name="className" value="ForumCategories" />
+                  <option name="tableName" value="forum_categories" />
+                </TableUIInfo>
+                <TableUIInfo>
+                  <option name="className" value="ForumLikes" />
+                  <option name="tableName" value="forum_likes" />
+                </TableUIInfo>
+                <TableUIInfo>
+                  <option name="className" value="ForumPosts" />
+                  <option name="tableName" value="forum_posts" />
+                </TableUIInfo>
+                <TableUIInfo>
+                  <option name="className" value="ForumReplies" />
+                  <option name="tableName" value="forum_replies" />
                 </TableUIInfo>
               </list>
             </option>

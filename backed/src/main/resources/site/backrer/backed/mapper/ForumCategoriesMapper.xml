@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.backrer.backed.mapper.ForumCategoriesMapper">
+
+    <resultMap id="BaseResultMap" type="site.backrer.backed.entity.ForumCategories">
+            <id property="categoryId" column="category_id" />
+            <result property="name" column="name" />
+            <result property="description" column="description" />
+            <result property="createdAt" column="created_at" />
+            <result property="isActive" column="is_active" />
+            <result property="parentId" column="parent_id" />
+            <result property="sortOrder" column="sort_order" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        category_id,name,description,created_at,is_active,parent_id,
+        sort_order
+    </sql>
+</mapper>

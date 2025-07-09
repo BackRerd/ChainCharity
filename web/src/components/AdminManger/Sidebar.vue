@@ -53,9 +53,23 @@
     <el-sub-menu index="users">
       <template #title>
         <el-icon><user /></el-icon>
-        <span>用户管理</span>
+        <span>其他管理</span>
       </template>
       <el-menu-item index="/admin/volunteers">用户管理</el-menu-item>
+      <el-menu-item index="/admin/announcement">公告管理</el-menu-item>
+    </el-sub-menu>
+
+    <el-sub-menu index="post">
+      <template #title>
+        <el-icon><user /></el-icon>
+        <span>帖子管理</span>
+      </template>
+      <el-menu-item index="/admin/volunteers">帖子分类</el-menu-item>
+      <el-menu-item index="/admin/volunteers">帖子管理</el-menu-item>
+      <el-menu-item index="/admin/volunteers">帖子回复</el-menu-item>
+      <el-menu-item index="/admin/volunteers">帖子点赞</el-menu-item>
+      <el-menu-item index="/admin/volunteers">帖子收藏</el-menu-item>
+      <el-menu-item index="/admin/volunteers">帖子附件</el-menu-item>
     </el-sub-menu>
   </el-menu>
 </template>

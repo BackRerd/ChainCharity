@@ -6,6 +6,7 @@
         background-color="#545c64"
         text-color="#fff"
         active-text-color="#ffd04b"
+        class="el-menu-vertical"
     >
       <el-menu-item index="/">
         <el-icon><HomeFilled /></el-icon>
@@ -17,6 +18,10 @@
           <el-icon><Menu /></el-icon>
           <span>首页功能</span>
         </template>
+        <el-menu-item index="/user/user/announcement">
+          <el-icon><WarningFilled /></el-icon>
+          <span>最新公告</span>
+        </el-menu-item>
         <el-menu-item index="/user/posts">
           <el-icon><Document /></el-icon>
           <span>最新动态</span>
@@ -60,11 +65,19 @@ const activeMenu = computed(() => route.path)
 .nav-bar {
   background-color: #545c64;
   color: white;
-  height: calc(100vh - 60px);
+  height: 100vh; /* 改为100vh占满整个视窗高度 */
+  position: sticky; /* 添加粘性定位 */
+  top: 0; /* 粘性定位顶部 */
+  overflow-y: auto; /* 添加滚动条以防内容过多 */
 }
 
 .el-menu {
   border-right: none;
+  height: 100%; /* 让菜单充满父容器 */
+}
+
+.el-menu-vertical {
+  min-height: 100vh; /* 最小高度为视窗高度 */
 }
 
 .el-menu-item.is-active {

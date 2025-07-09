@@ -204,4 +204,94 @@ CREATE TABLE `user_profiles` (
                                  UNIQUE INDEX `id_card_number`(`id_card_number`) USING BTREE,
                                  CONSTRAINT `fk_profile_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci;
+
+CREATE TABLE `announcement` (
+                                `id` varchar(36) NOT NULL COMMENT '公告ID，UUID',
+                                `title` varchar(100) NOT NULL COMMENT '公告标题',
+                                `content` text NOT NULL COMMENT '公告内容(Markdown格式)',
+                                `is_top` tinyint NOT NULL DEFAULT '0' COMMENT '是否置顶：0-否，1-是',
+                                `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                `creator_id` varchar(36) DEFAULT NULL COMMENT '创建人ID',
+                                `category_id` varchar(36) DEFAULT NULL COMMENT '分类ID',
+                                PRIMARY KEY (`id`),
+                                KEY `idx_category` (`category_id`),
+                                KEY `idx_top` (`is_top`),
+                                KEY `idx_create_time` (`create_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='公告表';
+
+CREATE TABLE `forum_categories` (
+                                    `category_id` int(11) NOT NULL AUTO_INCREMENT,
+                                    `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                                    `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+                                    `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                    `is_active` tinyint(1) NOT NULL DEFAULT 1,
+                                    `parent_id` int(11) NULL DEFAULT NULL COMMENT '用于子分类',
+                                    `sort_order` int(11) NOT NULL DEFAULT 0 COMMENT '分类排序',
+                                    PRIMARY KEY (`category_id`) USING BTREE,
+                                    INDEX `parent_id`(`parent_id`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+CREATE TABLE `forum_posts` (
+                               `post_id` int(11) NOT NULL AUTO_INCREMENT,
+                               `user_id` int(11) NOT NULL,
+                               `category_id` int(11) NOT NULL,
+                               `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                               `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                               `view_count` int(11) NOT NULL DEFAULT 0,
+                               `reply_count` int(11) NOT NULL DEFAULT 0,
+                               `last_reply_at` timestamp NULL DEFAULT NULL,
+                               `is_sticky` tinyint(1) NOT NULL DEFAULT 0,
+                               `is_essence` tinyint(1) NOT NULL DEFAULT 0 COMMENT '精华帖',
+                               `is_closed` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否关闭回复',
+                               `status` enum('published','pending','deleted') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'published',
+                               `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                               `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                               PRIMARY KEY (`post_id`) USING BTREE,
+                               INDEX `user_id`(`user_id`) USING BTREE,
+                               INDEX `category_id`(`category_id`) USING BTREE,
+                               INDEX `is_sticky`(`is_sticky`) USING BTREE,
+                               FULLTEXT INDEX `title_content`(`title`, `content`)
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+CREATE TABLE `forum_replies` (
+                                 `reply_id` int(11) NOT NULL AUTO_INCREMENT,
+                                 `post_id` int(11) NOT NULL,
+                                 `user_id` int(11) NOT NULL,
+                                 `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                                 `like_count` int(11) NOT NULL DEFAULT 0,
+                                 `is_first` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否是首帖的回复',
+                                 `status` enum('published','pending','deleted') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'published',
+                                 `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                 `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                 PRIMARY KEY (`reply_id`) USING BTREE,
+                                 INDEX `post_id`(`post_id`) USING BTREE,
+                                 INDEX `user_id`(`user_id`) USING BTREE,
+                                 INDEX `is_first`(`is_first`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+CREATE TABLE `forum_likes` (
+                               `like_id` int(11) NOT NULL AUTO_INCREMENT,
+                               `user_id` int(11) NOT NULL,
+                               `post_id` int(11) NULL DEFAULT NULL,
+                               `reply_id` int(11) NULL DEFAULT NULL,
+                               `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                               PRIMARY KEY (`like_id`) USING BTREE,
+                               UNIQUE INDEX `user_content`(`user_id`, `post_id`, `reply_id`) USING BTREE,
+                               INDEX `post_id`(`post_id`) USING BTREE,
+                               INDEX `reply_id`(`reply_id`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+CREATE TABLE `forum_attachments` (
+                                     `attachment_id` int(11) NOT NULL AUTO_INCREMENT,
+                                     `post_id` int(11) NULL DEFAULT NULL,
+                                     `reply_id` int(11) NULL DEFAULT NULL,
+                                     `user_id` int(11) NOT NULL,
+                                     `file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                                     `file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                                     `file_size` int(11) NOT NULL COMMENT '文件大小(字节)',
+                                     `file_type` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                                     `download_count` int(11) NOT NULL DEFAULT 0,
+                                     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                     PRIMARY KEY (`attachment_id`) USING BTREE,
+                                     INDEX `post_id`(`post_id`) USING BTREE,
+                                     INDEX `reply_id`(`reply_id`) USING BTREE,
+                                     INDEX `user_id`(`user_id`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 SET FOREIGN_KEY_CHECKS = 1;

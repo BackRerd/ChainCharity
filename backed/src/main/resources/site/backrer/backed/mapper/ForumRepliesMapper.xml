@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.backrer.backed.mapper.ForumRepliesMapper">
+
+    <resultMap id="BaseResultMap" type="site.backrer.backed.entity.ForumReplies">
+            <id property="replyId" column="reply_id" />
+            <result property="postId" column="post_id" />
+            <result property="userId" column="user_id" />
+            <result property="content" column="content" />
+            <result property="likeCount" column="like_count" />
+            <result property="isFirst" column="is_first" />
+            <result property="status" column="status" />
+            <result property="createdAt" column="created_at" />
+            <result property="updatedAt" column="updated_at" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        reply_id,post_id,user_id,content,like_count,is_first,
+        status,created_at,updated_at
+    </sql>
+</mapper>

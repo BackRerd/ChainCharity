@@ -55,8 +55,15 @@ const routes = [
         name: 'Assistance',
         component: () => import('../views/UserView/Assistance.vue'),
         meta: { title: '我的受助' }
+      },
+      {
+        path: '/user/user/announcement',
+        name: 'UserAnnouncement',
+        component: () => import('../views/UserView/UserAnnouncement.vue'),
+        meta: { title: '最新公告' }
       }
     ]
+
   },
   {
     path: '/admin',
@@ -136,6 +143,13 @@ const routes = [
       },
 
       {
+        path: '/admin/announcement',
+        name: 'Announcement',
+        component: () => import('@/views/AdminPage/Announcement.vue'),
+        meta: { title: '公告管理' }
+      },
+
+      {
         path: 'volunteers',
         name: 'Volunteers',
         component: () => import('@/views/AdminViews/Volunteers.vue'),
@@ -143,7 +157,7 @@ const routes = [
           title: '志愿者管理',
           icon: 'User' // 用于侧边栏图标
         }
-      }
+      },
     ],
     meta: { title: '数据概览',requiresAuth: true },
   },
