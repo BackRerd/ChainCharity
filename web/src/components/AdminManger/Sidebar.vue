@@ -64,12 +64,11 @@
         <el-icon><user /></el-icon>
         <span>帖子管理</span>
       </template>
-      <el-menu-item index="/admin/volunteers">帖子分类</el-menu-item>
-      <el-menu-item index="/admin/volunteers">帖子管理</el-menu-item>
-      <el-menu-item index="/admin/volunteers">帖子回复</el-menu-item>
-      <el-menu-item index="/admin/volunteers">帖子点赞</el-menu-item>
-      <el-menu-item index="/admin/volunteers">帖子收藏</el-menu-item>
-      <el-menu-item index="/admin/volunteers">帖子附件</el-menu-item>
+      <el-menu-item index="/admin/forum/categories">帖子分类</el-menu-item>
+      <el-menu-item index="/admin/forum/posts">帖子管理</el-menu-item>
+      <el-menu-item index="/admin/forum/replies">帖子回复</el-menu-item>
+      <el-menu-item index="/admin/forum/likes">帖子点赞</el-menu-item>
+      <el-menu-item index="/admin/forum/attachments">帖子附件</el-menu-item>
     </el-sub-menu>
   </el-menu>
 </template>

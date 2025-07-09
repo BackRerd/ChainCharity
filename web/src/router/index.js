@@ -61,7 +61,7 @@ const routes = [
         name: 'UserAnnouncement',
         component: () => import('../views/UserView/UserAnnouncement.vue'),
         meta: { title: '最新公告' }
-      }
+      },
     ]
 
   },
@@ -148,7 +148,6 @@ const routes = [
         component: () => import('@/views/AdminPage/Announcement.vue'),
         meta: { title: '公告管理' }
       },
-
       {
         path: 'volunteers',
         name: 'Volunteers',
@@ -157,6 +156,36 @@ const routes = [
           title: '志愿者管理',
           icon: 'User' // 用于侧边栏图标
         }
+      },
+      {
+        path: '/admin/forum/attachments',
+        name: 'ForumAttachments',
+        component: () => import('@/views/AdminPage/ForumAttachments.vue'),
+        meta: { title: '论坛附件' }
+      },
+      {
+        path: '/admin/forum/categories',
+        name: 'ForumCategories',
+        component: () => import('@/views/AdminPage/ForumCategories.vue'),
+        meta: { title: '论坛分页' }
+      },
+      {
+        path: '/admin/forum/likes',
+        name: 'ForumLikes',
+        component: () => import('@/views/AdminPage/ForumLikes.vue'),
+        meta: { title: '论坛喜欢' }
+      },
+      {
+        path: '/admin/forum/posts',
+        name: 'ForumPosts',
+        component: () => import('@/views/AdminPage/ForumPosts.vue'),
+        meta: { title: '论坛表' }
+      },
+      {
+        path: '/admin/forum/replies',
+        name: 'ForumReplies',
+        component: () => import('@/views/AdminPage/ForumReplies.vue'),
+        meta: { title: '论坛回复' }
       },
     ],
     meta: { title: '数据概览',requiresAuth: true },
@@ -170,13 +199,13 @@ const router = createRouter({
 })
 // router.beforeEach((to, from, next) => {
 //   const isAuthenticated = localStorage.getItem("token") != null
+//   if (!isAuthenticated && to.path.startsWith('/user')){
+//     ElMessage.error("请你先进行登录!")
+//   }
 //   if (isAuthenticated && to.path.startsWith('/admin')) {
 //     const user = JSON.parse(localStorage.getItem("user"))
-//     if (user.role === 0){
-//       router.push('/')
-//       ElMessage.error("你没有资格访问本页面！")
-//     }
-//     console.log('访问了特定页面');
+//     router.push('/')
+//     ElMessage.error("你没有资格访问本页面！您的IP不符合要求！")
 //   }
 //   next();
 // });

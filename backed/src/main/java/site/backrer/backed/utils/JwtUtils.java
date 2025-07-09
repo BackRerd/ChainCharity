@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
-    private final String jwtSecret = "dK0F4++9aO0oPTQe2bmEYZ5QbL9S3t7whglhklKY5G4="; // 建议放到配置文件
+    private final String jwtSecret = "dK0F4-+9aO0oPTQe2bmEYZ5QbL9S3t7whglhklKY5G4="; // 建议放到配置文件
     private final long jwtExpirationMs = 86400000; // 1天
     public String generateToken(Users user) {
         return Jwts.builder()

@@ -1,5 +1,6 @@
 package site.backrer.backed.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import site.backrer.backed.entity.ForumPosts;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -9,5 +10,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-07-09 08:42:44
 */
 public interface ForumPostsService extends IService<ForumPosts> {
-
+    Page<ForumPosts> searchPosts(Page<ForumPosts> page, String keyword);
 }

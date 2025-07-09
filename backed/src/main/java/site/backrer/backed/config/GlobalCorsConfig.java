@@ -14,10 +14,10 @@ public class GlobalCorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOriginPatterns(
-                                "http://cubeserver.w1.luyouxia.net",  // 你的前端域名
-                                "http://localhost:*",                 // 本地开发
-                                "http://127.0.0.1:*",                 // 本地IP访问
-                                "http://110.42.36.248:*"              // 你的服务器IP
+                                "http://cubeserver.w1.luyouxia.net",
+                                "http://localhost:*",
+                                "http://127.0.0.1:*",
+                                "http://110.42.36.248:*"
                         ).allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true)
