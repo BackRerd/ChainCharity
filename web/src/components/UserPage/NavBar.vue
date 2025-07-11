@@ -26,7 +26,7 @@
           <el-icon><Document /></el-icon>
           <span>最新动态</span>
         </el-menu-item>
-        <el-menu-item index="/user/emergency">
+        <el-menu-item index="/user/forum">
           <el-icon><WarningFilled /></el-icon>
           <span>紧急活动</span>
         </el-menu-item>

@@ -4,7 +4,7 @@
     <header class="header" :class="{ 'scrolled': isScrolled }">
       <div class="header-container">
         <div class="logo" @click="goHome">
-          <img src="https://via.placeholder.com/50x50/3a7bd5/ffffff?text=LOGO" alt="慈善Logo">
+          <img src="@/assets/images/logo.png" alt="慈善Logo">
           <span>爱心慈善</span>
         </div>
 
@@ -64,7 +64,7 @@
           </el-button>
         </div>
         <div class="hero-image" v-animate="'fadeIn'">
-          <img src="https://via.placeholder.com/600x400/3a7bd5/ffffff?text=爱心图片" alt="慈善图片">
+          <img src="@/assets/images/img.png" alt="慈善图片">
         </div>
       </section>
 
@@ -275,7 +275,7 @@
       <div class="footer-content">
         <div class="footer-about" v-animate="'fadeInUp'">
           <div class="footer-logo">
-            <img src="https://via.placeholder.com/50x50/3a7bd5/ffffff?text=LOGO" alt="慈善Logo">
+            <img src="@/assets/images/logo.png" alt="慈善Logo">
             <span>爱心慈善</span>
           </div>
           <p>我们致力于帮助贫困儿童和弱势群体，让世界变得更美好。</p>
@@ -479,13 +479,20 @@ const handleAction = (type) => {
       break
   }
 }
-
+import logoImg from '@/assets/images/img_1.png';
+import logoImg2 from '@/assets/images/img_2.png';
+import logoImg3 from '@/assets/images/img_3.png';
+import logoImg4 from '@/assets/images/img_4.png';
+import logoImg5 from '@/assets/images/img_5.png';
+import logoImg6 from '@/assets/images/img_6.png';
+import logoImg7 from '@/assets/images/img_7.png';
+import logoImg8 from '@/assets/images/logo.png';
 // 特色活动
 const featuredEvents = ref([
   {
     title: '山区儿童助学计划',
     description: '为山区儿童提供教育资源和学习环境',
-    image: 'https://via.placeholder.com/400x300/3a7bd5/ffffff?text=助学计划',
+    image: logoImg,
     date: '2023-10-15 至 2023-12-31',
     location: '云南山区',
     raised: 125000,
@@ -498,7 +505,7 @@ const featuredEvents = ref([
   {
     title: '冬季温暖包发放',
     description: '为贫困地区儿童提供冬季保暖物资',
-    image: 'https://via.placeholder.com/400x300/00d2ff/ffffff?text=温暖包',
+    image: logoImg2,
     date: '2023-11-20 至 2023-12-20',
     location: '甘肃贫困地区',
     raised: 80000,
@@ -511,7 +518,7 @@ const featuredEvents = ref([
   {
     title: '敬老院爱心义诊',
     description: '为敬老院老人提供免费医疗服务',
-    image: 'https://via.placeholder.com/400x300/a18cd1/ffffff?text=爱心义诊',
+    image: logoImg3,
     date: '2023-11-05 至 2023-11-10',
     location: '北京朝阳区',
     raised: 45000,
@@ -524,7 +531,7 @@ const featuredEvents = ref([
   {
     title: '环保公益活动',
     description: '组织志愿者清理城市公园垃圾',
-    image: 'https://via.placeholder.com/400x300/ff9a5a/ffffff?text=环保活动',
+    image: logoImg4,
     date: '2023-11-25',
     location: '上海浦东新区',
     raised: 35000,
@@ -537,7 +544,7 @@ const featuredEvents = ref([
   {
     title: '特殊儿童关爱日',
     description: '为特殊儿童举办关爱活动',
-    image: 'https://via.placeholder.com/400x300/667eea/ffffff?text=儿童关爱',
+    image: logoImg5,
     date: '2023-12-03',
     location: '广州天河区',
     raised: 28000,
@@ -639,17 +646,17 @@ const highlightUpdates = ref([
   {
     title: '山区助学项目进展',
     content: '我们的山区助学项目已帮助500多名儿童重返校园',
-    image: 'https://via.placeholder.com/800x400/3a7bd5/ffffff?text=助学项目'
+    image: logoImg6
   },
   {
     title: '敬老院爱心活动回顾',
     content: '上个月的敬老院爱心活动获得老人们的一致好评',
-    image: 'https://via.placeholder.com/800x400/ff9a5a/ffffff?text=敬老活动'
+    image: logoImg3
   },
   {
     title: '环保公益成果展示',
     content: '我们的环保公益活动已清理超过10吨垃圾',
-    image: 'https://via.placeholder.com/800x400/00d2ff/ffffff?text=环保成果'
+    image: logoImg4
   }
 ])
 
@@ -659,7 +666,7 @@ const volunteerStories = ref([
   {
     name: '张明',
     role: '支教志愿者',
-    avatar: 'https://via.placeholder.com/150/3a7bd5/ffffff?text=张',
+    avatar: logoImg8,
     excerpt: '在山区支教的一年让我明白了教育的真正意义',
     story: '去年我辞去城市工作，前往云南山区支教。那里的孩子们对知识的渴望让我深受感动。虽然条件艰苦，但看到他们一天天进步，我觉得一切付出都值得。',
     tags: ['教育', '山区', '长期'],
@@ -668,7 +675,7 @@ const volunteerStories = ref([
   {
     name: '李华',
     role: '医疗志愿者',
-    avatar: 'https://via.placeholder.com/150/ff9a5a/ffffff?text=李',
+    avatar: logoImg8,
     excerpt: '用我的专业知识帮助需要帮助的人',
     story: '作为一名医生，我每月都会参加敬老院的义诊活动。老人们常常因为经济原因无法及时就医，我们的服务对他们来说非常重要。',
     tags: ['医疗', '老人', '专业'],
@@ -677,7 +684,7 @@ const volunteerStories = ref([
   {
     name: '王芳',
     role: '环保志愿者',
-    avatar: 'https://via.placeholder.com/150/00d2ff/ffffff?text=王',
+    avatar: logoImg8,
     excerpt: '保护环境是我们每个人的责任',
     story: '我带领团队每月组织一次环保活动，清理公园和河道的垃圾。最让我高兴的是看到越来越多的人加入我们，共同保护环境。',
     tags: ['环保', '团队', '社区'],

@@ -3,6 +3,12 @@ import AuthView from '../views/AuthView.vue'
 import Layout from "@/views/UserView/Home/Layout.vue";
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import CategoryPosts from "@/views/UserView/Forum/CategoryPosts.vue";
+import EditPost from "@/views/UserView/Forum/EditPost.vue";
+import CreatePost from "@/views/UserView/Forum/CreatePost.vue";
+import PostDetail from "@/views/UserView/Forum/PostDetail.vue";
+import ForumHome from "@/views/UserView/Forum/ForumHome.vue";
+
 
 const routes = [
   {
@@ -26,11 +32,45 @@ const routes = [
     path: '/user',
     component: Layout,
     children: [
+
       {
         path: '',
         name: 'Home',
         component: () => import('../views/UserView/Home/Index.vue'),
         meta: { title: '慈善首页' }
+      },
+      {
+        path: 'forum',
+        name: 'ForumHome',
+        component: ForumHome,
+        meta: { title: '论坛首页' }
+      },
+      {
+        path: 'forum/post/:id',
+        name: 'PostDetail',
+        component: PostDetail,
+        meta: { title: '帖子详情' },
+        props: true
+      },
+      {
+        path: 'forum/post/create',
+        name: 'CreatePost',
+        component: CreatePost,
+        meta: { title: '发表帖子', requiresAuth: true }
+      },
+      {
+        path: 'forum/post/edit/:id',
+        name: 'EditPost',
+        component: EditPost,
+        meta: { title: '编辑帖子', requiresAuth: true },
+        props: true
+      },
+      {
+        path: 'forum/category/:id',
+        name: 'CategoryPosts',
+        component: CategoryPosts,
+        meta: { title: '分类帖子' },
+        props: true
       },
       {
         path: 'posts',

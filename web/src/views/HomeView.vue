@@ -52,6 +52,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import {ElMessage} from "element-plus";
 
 const router = useRouter()
 

@@ -50,8 +50,20 @@ public class ForumLikesController {
         return Result.success(forumLikesService.save(like));
     }
 
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Integer id) {
-        return Result.success(forumLikesService.removeById(id));
+    @DeleteMapping("")
+    public Result delete(@RequestParam Integer id,
+                         @RequestParam(required = false) Integer postId,
+                         @RequestParam(required = false) Integer userId) {
+        boolean b;
+        if (postId != null && userId != null) {
+            QueryWrapper<ForumLikes> wrapper = new QueryWrapper<>();
+            wrapper.eq("user_id", userId)
+                    .eq("post_id", postId);
+            b = forumLikesService.remove(wrapper);
+        }else {
+            b = forumLikesService.removeById(id);;
+        }
+
+        return Result.success(b);
     }
 }

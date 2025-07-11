@@ -73,13 +73,13 @@ public class ForumPostsController {
 
     @PostMapping
     public Result create(@RequestBody ForumPosts post) {
-        return Result.success(forumPostsService.save(post));
+        return Result.success(forumPostsService.save(post) ? forumPostsService.getById(post.getPostId()) : null);
     }
 
     @PutMapping("/{id}")
     public Result update(@PathVariable Integer id, @RequestBody ForumPosts post) {
         post.setPostId(id);
-        return Result.success(forumPostsService.updateById(post));
+        return Result.success(forumPostsService.updateById(post) ? forumPostsService.getById(post.getPostId()) : null);
     }
 
     @DeleteMapping("/{id}")
