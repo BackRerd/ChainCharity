@@ -7,7 +7,7 @@
     </el-page-header>
 
     <div class="post-form">
-      <el-form :model="form" :rules="rules" ref="formRef" label-width="80px">
+      <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
         <!-- 标题 -->
         <el-form-item label="标题" prop="title">
           <el-input
@@ -41,25 +41,31 @@
             <div class="editor-toolbar">
               <el-button-group>
                 <el-tooltip content="粗体" placement="top">
-                  <el-button :icon="Edit" @click="insertText('**', '**')" />
+                  <el-button :icon="BoldIcon" @click="insertText('**', '**')" />
                 </el-tooltip>
                 <el-tooltip content="斜体" placement="top">
-                  <el-button :icon="Warning" @click="insertText('*', '*')" />
+                  <el-button :icon="ItalicIcon" @click="insertText('*', '*')" />
                 </el-tooltip>
                 <el-tooltip content="链接" placement="top">
                   <el-button :icon="LinkIcon" @click="insertText('[', '](url)')" />
                 </el-tooltip>
                 <el-tooltip content="代码" placement="top">
-                  <el-button :icon="MagicStick" @click="insertText('```\n', '\n```')" />
+                  <el-button :icon="CodeIcon" @click="insertText('```\n', '\n```')" />
                 </el-tooltip>
                 <el-tooltip content="引用" placement="top">
-                  <el-button :icon="ChatDotRound" @click="insertText('> ', '')" />
+                  <el-button :icon="QuoteIcon" @click="insertText('> ', '')" />
                 </el-tooltip>
                 <el-tooltip content="无序列表" placement="top">
-                  <el-button :icon="ListIcon" @click="insertText('- ', '')" />
+                  <el-button :icon="UnorderedListIcon" @click="insertText('- ', '')" />
                 </el-tooltip>
                 <el-tooltip content="有序列表" placement="top">
-                  <el-button :icon="FinishedIcon" @click="insertText('1. ', '')" />
+                  <el-button :icon="OrderedListIcon" @click="insertText('1. ', '')" />
+                </el-tooltip>
+                <el-tooltip content="标题" placement="top">
+                  <el-button :icon="TitleIcon" @click="insertText('## ', '')" />
+                </el-tooltip>
+                <el-tooltip content="分割线" placement="top">
+                  <el-button :icon="DivideIcon" @click="insertText('\n---\n', '')" />
                 </el-tooltip>
               </el-button-group>
 
@@ -97,7 +103,10 @@
             />
 
             <div class="editor-preview">
-              <h4>预览:</h4>
+              <h4 class="preview-title">
+                <el-icon><View /></el-icon>
+                <span>预览</span>
+              </h4>
               <div class="markdown-content" v-html="renderedContent"></div>
             </div>
           </div>
@@ -125,16 +134,26 @@
 
         <!-- 帖子选项 -->
         <el-form-item label="帖子选项">
-          <el-checkbox v-model="form.isSticky">置顶</el-checkbox>
-          <el-checkbox v-model="form.isEssence">精华</el-checkbox>
+          <el-checkbox v-model="form.isSticky">
+            <el-icon><Top /></el-icon>
+            <span>置顶</span>
+          </el-checkbox>
+          <el-checkbox v-model="form.isEssence">
+            <el-icon><Star /></el-icon>
+            <span>精华</span>
+          </el-checkbox>
         </el-form-item>
 
         <!-- 提交按钮 -->
         <el-form-item>
-          <el-button type="primary" @click="submitForm" :loading="submitting">
-            更新帖子
+          <el-button type="primary" @click="submitForm" :loading="submitting" class="submit-btn">
+            <el-icon><Upload /></el-icon>
+            <span>更新帖子</span>
           </el-button>
-          <el-button @click="router.go(-1)">取消</el-button>
+          <el-button @click="router.go(-1)" class="cancel-btn">
+            <el-icon><Close /></el-icon>
+            <span>取消</span>
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -145,17 +164,24 @@
 import {ref, computed, onMounted, nextTick} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
-  Edit as Bold,
-  Warning as Italic,
-  MagicStick as Code,
-  ChatDotRound as Quote,
+  Top,
+  Star,
+  View,
+  Upload,
+  Close,
+  Edit as BoldIcon,
+  Warning as ItalicIcon,
+  MagicStick as CodeIcon,
+  ChatDotRound as QuoteIcon,
   Link as LinkIcon,
-  List as ListIcon,
-  Finished as FinishedIcon,
+  List as UnorderedListIcon,
+  Finished as OrderedListIcon,
   Picture as PictureIcon,
   DocumentAdd as DocumentAddIcon,
   Document as DocumentIcon,
-  Delete as DeleteIcon
+  Delete as DeleteIcon,
+  Minus as DivideIcon,  // 用减号代替分割线图标
+  Operation as TitleIcon  // 用操作图标代替字体大小图标
 } from '@element-plus/icons-vue'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
@@ -415,41 +441,67 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .edit-post {
   max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
+  background-color: #f8fafc;
+  min-height: 100vh;
 }
 
 .page-header-title {
   font-size: 18px;
   font-weight: 500;
+  color: #2c3e50;
 }
 
 .post-form {
   margin-top: 20px;
   background-color: #fff;
-  padding: 20px;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #e6ebf5;
 }
 
 .editor-container {
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
+  border: 1px solid #e6ebf5;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .editor-toolbar {
-  padding: 5px 10px;
-  border-bottom: 1px solid #dcdfe6;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e6ebf5;
   display: flex;
   justify-content: space-between;
-  background-color: #f5f7fa;
+  align-items: center;
+  background-color: #f8fafc;
+
+  .el-button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .el-button {
+    border-radius: 4px;
+    color: #5a6a85;
+    background-color: #fff;
+    border-color: #e6ebf5;
+
+    &:hover {
+      color: #409eff;
+      border-color: #c6e2ff;
+      background-color: #ecf5ff;
+    }
+  }
 }
 
 .editor-textarea {
   border: none;
+  font-size: 14px;
 }
 
 .editor-textarea :deep(.el-textarea__inner) {
@@ -457,15 +509,38 @@ onMounted(() => {
   padding: 15px;
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', Arial, sans-serif;
   line-height: 1.6;
+  color: #34495e;
+  background-color: #fff;
+  transition: none;
+
+  &:focus {
+    box-shadow: none;
+  }
 }
 
 .editor-preview {
   padding: 15px;
-  border-top: 1px dashed #eee;
+  border-top: 1px dashed #e6ebf5;
+  background-color: #f8fafc;
+
+  .preview-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #5a6a85;
+    margin-bottom: 12px;
+    font-size: 15px;
+
+    .el-icon {
+      font-size: 16px;
+    }
+  }
 }
 
 .markdown-content {
   word-break: break-word;
+  color: #34495e;
+  line-height: 1.7;
 }
 
 .markdown-content :deep(h1),
@@ -473,6 +548,7 @@ onMounted(() => {
 .markdown-content :deep(h3) {
   margin-top: 1em;
   margin-bottom: 0.5em;
+  color: #2c3e50;
 }
 
 .markdown-content :deep(p) {
@@ -482,24 +558,74 @@ onMounted(() => {
 .markdown-content :deep(img) {
   max-width: 100%;
   height: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.markdown-content :deep(a) {
+  color: #409eff;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.markdown-content :deep(code) {
+  background-color: #f3f4f6;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+}
+
+.markdown-content :deep(pre) {
+  background-color: #f8fafc;
+  padding: 12px;
+  border-radius: 4px;
+  overflow: auto;
+
+  code {
+    background-color: transparent;
+    padding: 0;
+  }
 }
 
 .attachment-list {
   width: 100%;
+  border: 1px solid #e6ebf5;
+  border-radius: 6px;
+  padding: 10px;
+  background-color: #f8fafc;
 }
 
 .attachment-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px dashed #eee;
+  padding: 8px 10px;
+  border-bottom: 1px dashed #e6ebf5;
+  transition: background-color 0.2s;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: #f0f7ff;
+  }
 }
 
 .file-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+
+  .el-icon {
+    color: #409eff;
+    font-size: 18px;
+  }
 }
 
 .file-name {
@@ -507,10 +633,59 @@ onMounted(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: #34495e;
 }
 
 .file-size {
-  color: #999;
+  color: #99a9bf;
   font-size: 12px;
+  margin-left: 5px;
+}
+
+.el-form-item {
+  margin-bottom: 22px;
+
+  :deep(.el-form-item__label) {
+    color: #5a6a85;
+    font-weight: 500;
+  }
+}
+
+.el-checkbox {
+  margin-right: 20px;
+
+  .el-icon {
+    margin-right: 5px;
+    color: #f7b731;
+  }
+
+  &.is-checked {
+    .el-icon {
+      color: #409eff;
+    }
+  }
+}
+
+.submit-btn {
+  background-color: #409eff;
+  border-color: #409eff;
+  padding: 10px 20px;
+
+  &:hover {
+    background-color: #66b1ff;
+    border-color: #66b1ff;
+  }
+
+  .el-icon {
+    margin-right: 5px;
+  }
+}
+
+.cancel-btn {
+  padding: 10px 20px;
+
+  .el-icon {
+    margin-right: 5px;
+  }
 }
 </style>

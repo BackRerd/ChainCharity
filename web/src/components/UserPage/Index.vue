@@ -1,10 +1,15 @@
 <template>
   <div :class="['charity-home', { 'dark-mode': isDarkMode }]">
-    <!-- 顶部导航栏 - 重新设计 -->
+    <!-- 爱心特效 -->
+    <div class="hearts-container">
+      <div v-for="(heart, index) in hearts" :key="index" class="heart" :style="heart.style"></div>
+    </div>
+
+    <!-- 顶部导航栏 -->
     <header class="header" :class="{ 'scrolled': isScrolled }">
       <div class="header-container">
         <div class="logo" @click="goHome">
-          <img src="@/assets/images/logo.png" alt="慈善Logo">
+          <img :src="logoImg" alt="慈善Logo">
           <span>爱心慈善</span>
         </div>
 
@@ -15,7 +20,7 @@
             @select="handleSelect"
             :background-color="isDarkMode ? '#1a1a1a' : 'transparent'"
             :text-color="isDarkMode ? '#fff' : '#333'"
-            :active-text-color="isDarkMode ? '#ff9a5a' : '#3a7bd5'"
+            :active-text-color="isDarkMode ? '#ffdf80' : '#d16654'"
         >
           <el-menu-item index="1">首页</el-menu-item>
           <el-menu-item index="2">活动</el-menu-item>
@@ -31,7 +36,7 @@
               inactive-text="明亮"
               @change="toggleTheme"
               class="theme-switch"
-              :active-color="isDarkMode ? '#ff9a5a' : '#3a7bd5'"
+              :active-color="isDarkMode ? '#ffdf80' : '#d16654'"
           />
           <el-button
               type="primary"
@@ -45,9 +50,9 @@
       </div>
     </header>
 
-    <!-- 主要内容区域 - 完全重新设计 -->
+    <!-- 主要内容区域 -->
     <main class="main-content">
-      <!-- 英雄区域 - 新增渐变背景 -->
+      <!-- 英雄区域 -->
       <section class="hero-section" ref="heroSection">
         <div class="hero-content">
           <h1 class="hero-title" v-animate="'fadeInUp'">让世界充满爱</h1>
@@ -64,11 +69,11 @@
           </el-button>
         </div>
         <div class="hero-image" v-animate="'fadeIn'">
-          <img src="@/assets/images/img.png" alt="慈善图片">
+          <img :src="heroImage" alt="慈善图片">
         </div>
       </section>
 
-      <!-- 快速行动区域 - 卡片式设计 -->
+      <!-- 快速行动区域 -->
       <section class="quick-actions">
         <div class="section-header" v-animate="'fadeInUp'">
           <h2>立即行动</h2>
@@ -96,7 +101,7 @@
         </div>
       </section>
 
-      <!-- 特色活动 - 横向滑动卡片 -->
+      <!-- 特色活动 -->
       <section class="featured-events">
         <div class="section-header" v-animate="'fadeInUp'">
           <h2>特色活动</h2>
@@ -148,7 +153,7 @@
         </div>
       </section>
 
-      <!-- 数据统计 - 动态计数器 -->
+      <!-- 数据统计 -->
       <section class="stats-section" v-animate="'fadeIn'">
         <div class="stats-bg"></div>
         <div class="stats-content">
@@ -170,7 +175,7 @@
         </div>
       </section>
 
-      <!-- 最新动态 - 卡片与时间线结合 -->
+      <!-- 最新动态 -->
       <section class="latest-updates">
         <div class="section-header" v-animate="'fadeInUp'">
           <h2>最新动态</h2>
@@ -208,7 +213,7 @@
         </div>
       </section>
 
-      <!-- 志愿者故事 - 卡片翻转效果 -->
+      <!-- 志愿者故事 -->
       <section class="volunteer-stories">
         <div class="section-header" v-animate="'fadeInUp'">
           <h2>志愿者故事</h2>
@@ -251,7 +256,7 @@
         </div>
       </section>
 
-      <!-- 捐助呼吁 - 渐变背景和动画按钮 -->
+      <!-- 捐助呼吁 -->
       <section class="donation-call" v-animate="'fadeIn'">
         <div class="call-container">
           <h2 v-animate="'fadeInUp'">您的捐助可以改变一个生命</h2>
@@ -270,12 +275,12 @@
       </section>
     </main>
 
-    <!-- 页脚 - 重新设计 -->
+    <!-- 页脚 -->
     <footer class="footer">
       <div class="footer-content">
         <div class="footer-about" v-animate="'fadeInUp'">
           <div class="footer-logo">
-            <img src="@/assets/images/logo.png" alt="慈善Logo">
+            <img :src="logoImg" alt="慈善Logo">
             <span>爱心慈善</span>
           </div>
           <p>我们致力于帮助贫困儿童和弱势群体，让世界变得更美好。</p>
@@ -336,6 +341,82 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
+// 导入图片资源
+import logoImg from '@/assets/images/logo.png'
+import heroImage from '@/assets/images/img.png'
+import eventImg1 from '@/assets/images/img_1.png'
+import eventImg2 from '@/assets/images/img_2.png'
+import eventImg3 from '@/assets/images/img_3.png'
+import eventImg4 from '@/assets/images/img_4.png'
+import eventImg5 from '@/assets/images/img_5.png'
+import highlightImg1 from '@/assets/images/img_6.png'
+import volunteerAvatar from '@/assets/images/img_7.png'
+
+const router = useRouter()
+
+// 爱心特效
+const hearts = ref([])
+
+const createHeart = () => {
+  const heart = {
+    x: Math.random() * 100,  // 随机水平位置
+    y: 100,  // 从底部开始
+    size: Math.random() * 15 + 10,  // 大小在10-25px之间
+    duration: Math.random() * 10 + 5,  // 动画持续时间5-15秒
+    delay: Math.random() * 2,  // 延迟0-2秒
+    opacity: Math.random() * 0.5 + 0.3,  // 透明度30%-80%
+    color: `hsl(${Math.random() * 30 + 350}, 100%, 70%)`  // 粉红色系
+  }
+
+  heart.style = {
+    left: `${heart.x}%`,
+    top: `${heart.y}%`,
+    width: `${heart.size}px`,
+    height: `${heart.size}px`,
+    animationDuration: `${heart.duration}s`,
+    animationDelay: `${heart.delay}s`,
+    opacity: heart.opacity,
+    color: heart.color
+  }
+
+  hearts.value.push(heart)
+
+  // 限制爱心数量
+  if(hearts.value.length > 30) {
+    hearts.value.shift()
+  }
+}
+
+// 页面加载时爱心爆炸效果
+const createHeartExplosion = (x, y) => {
+  const explosion = []
+  for (let i = 0; i < 15; i++) {
+    explosion.push({
+      x: x,
+      y: y,
+      size: Math.random() * 20 + 10,
+      duration: Math.random() * 3 + 1,
+      delay: 0,
+      opacity: Math.random() * 0.7 + 0.3,
+      color: `hsl(${Math.random() * 30 + 350}, 100%, 70%)`,
+      style: {}
+    })
+  }
+  explosion.forEach(heart => {
+    heart.style = {
+      left: `${heart.x}%`,
+      top: `${heart.y}%`,
+      width: `${heart.size}px`,
+      height: `${heart.size}px`,
+      animationDuration: `${heart.duration}s`,
+      animationDelay: `${heart.delay}s`,
+      opacity: heart.opacity,
+      color: heart.color
+    }
+    hearts.value.push(heart)
+  })
+}
+
 // 动画指令
 const vAnimate = {
   mounted(el, binding) {
@@ -380,8 +461,6 @@ const CountUp = {
   }
 }
 
-const router = useRouter()
-
 // 主题切换
 const isDarkMode = ref(false)
 const toggleTheme = () => {
@@ -403,6 +482,10 @@ onMounted(() => {
   checkMobile()
   window.addEventListener('resize', checkMobile)
   initEventScroller()
+
+  // 启动爱心特效
+  setInterval(createHeart, 800)
+  createHeartExplosion(50, 50) // 页面中央爆炸
 })
 
 onUnmounted(() => {
@@ -438,28 +521,28 @@ const quickActions = ref([
     description: '帮助需要帮助的人',
     icon: 'el-icon-coin',
     type: 'donate',
-    color: '#3a7bd5'
+    color: 'rgba(209, 102, 84, 0.9)'
   },
   {
     title: '成为志愿者',
     description: '用您的行动传递爱心',
     icon: 'el-icon-user-solid',
     type: 'volunteer',
-    color: '#ff9a5a'
+    color: 'rgba(248, 177, 149, 0.9)'
   },
   {
     title: '物资捐助',
     description: '捐赠物品帮助他人',
     icon: 'el-icon-box',
     type: 'goods',
-    color: '#00d2ff'
+    color: 'rgba(255, 209, 102, 0.9)'
   },
   {
     title: '分享故事',
     description: '传播爱心正能量',
     icon: 'el-icon-chat-line-round',
     type: 'story',
-    color: '#a18cd1'
+    color: 'rgba(160, 180, 200, 0.9)'
   }
 ])
 
@@ -479,80 +562,73 @@ const handleAction = (type) => {
       break
   }
 }
-import logoImg from '@/assets/images/img_1.png';
-import logoImg2 from '@/assets/images/img_2.png';
-import logoImg3 from '@/assets/images/img_3.png';
-import logoImg4 from '@/assets/images/img_4.png';
-import logoImg5 from '@/assets/images/img_5.png';
-import logoImg6 from '@/assets/images/img_6.png';
-import logoImg7 from '@/assets/images/img_7.png';
-import logoImg8 from '@/assets/images/logo.png';
+
 // 特色活动
 const featuredEvents = ref([
   {
     title: '山区儿童助学计划',
     description: '为山区儿童提供教育资源和学习环境',
-    image: logoImg,
+    image: eventImg1,
     date: '2023-10-15 至 2023-12-31',
     location: '云南山区',
     raised: 125000,
     target: 200000,
     progress: 62.5,
-    progressColor: '#3a7bd5',
+    progressColor: '#d16654',
     tag: '教育',
-    tagColor: '#ff9a5a'
+    tagColor: '#f8b195'
   },
   {
     title: '冬季温暖包发放',
     description: '为贫困地区儿童提供冬季保暖物资',
-    image: logoImg2,
+    image: eventImg2,
     date: '2023-11-20 至 2023-12-20',
     location: '甘肃贫困地区',
     raised: 80000,
     target: 150000,
     progress: 53.3,
-    progressColor: '#00d2ff',
+    progressColor: '#ffd166',
     tag: '物资',
-    tagColor: '#3a7bd5'
+    tagColor: '#d16654'
   },
   {
     title: '敬老院爱心义诊',
     description: '为敬老院老人提供免费医疗服务',
-    image: logoImg3,
+    image: eventImg3,
     date: '2023-11-05 至 2023-11-10',
     location: '北京朝阳区',
     raised: 45000,
     target: 50000,
     progress: 90,
-    progressColor: '#a18cd1',
+    progressColor: '#a0b4c8',
     tag: '医疗',
-    tagColor: '#00d2ff'
+    tagColor: '#ffd166'
   },
   {
     title: '环保公益活动',
     description: '组织志愿者清理城市公园垃圾',
-    image: logoImg4,
+    image: eventImg4,
     date: '2023-11-25',
     location: '上海浦东新区',
     raised: 35000,
     target: 40000,
     progress: 87.5,
-    progressColor: '#ff9a5a',
+    progressColor: '#f8b195',
     tag: '环保',
-    tagColor: '#a18cd1'
+    tagColor: '#a0b4c8'
   },
   {
     title: '特殊儿童关爱日',
     description: '为特殊儿童举办关爱活动',
-    image: logoImg5,
+    image: eventImg5,
     date: '2023-12-03',
     location: '广州天河区',
     raised: 28000,
     target: 50000,
     progress: 56,
-    progressColor: '#667eea',
+    progressColor: '#88c9a1',
     tag: '关爱',
-    tagColor: '#ff9a5a'
+    tagColor: '#f8b195'
   }
 ])
 
@@ -592,25 +668,25 @@ const stats = ref([
     number: 1250,
     title: '捐助项目',
     icon: 'el-icon-collection',
-    color: '#3a7bd5'
+    color: '#d16654'
   },
   {
     number: 3560,
     title: '志愿者',
     icon: 'el-icon-user',
-    color: '#ff9a5a'
+    color: '#f8b195'
   },
   {
     number: 12800,
     title: '受益儿童',
     icon: 'el-icon-child',
-    color: '#00d2ff'
+    color: '#ffd166'
   },
   {
     number: 5600,
     title: '受益老人',
     icon: 'el-icon-help',
-    color: '#a18cd1'
+    color: '#a0b4c8'
   }
 ])
 
@@ -620,25 +696,25 @@ const timelineUpdates = ref([
     title: '网站系统升级完成',
     content: '我们已完成网站系统升级，现在提供更流畅的捐助体验',
     date: '2023-11-12',
-    color: '#3a7bd5'
+    color: '#d16654'
   },
   {
     title: '冬季温暖包项目启动',
     content: '冬季温暖包项目正式启动，目标帮助1000名贫困儿童',
     date: '2023-11-05',
-    color: '#ff9a5a'
+    color: '#f8b195'
   },
   {
     title: '志愿者培训会圆满结束',
     content: '最新一期志愿者培训会圆满结束，新增50名志愿者',
     date: '2023-10-28',
-    color: '#00d2ff'
+    color: '#ffd166'
   },
   {
     title: '慈善晚宴成功举办',
     content: '年度慈善晚宴成功举办，筹集善款50万元',
     date: '2023-10-15',
-    color: '#a18cd1'
+    color: '#a0b4c8'
   }
 ])
 
@@ -646,17 +722,17 @@ const highlightUpdates = ref([
   {
     title: '山区助学项目进展',
     content: '我们的山区助学项目已帮助500多名儿童重返校园',
-    image: logoImg6
+    image: highlightImg1
   },
   {
     title: '敬老院爱心活动回顾',
     content: '上个月的敬老院爱心活动获得老人们的一致好评',
-    image: logoImg3
+    image: eventImg3
   },
   {
     title: '环保公益成果展示',
     content: '我们的环保公益活动已清理超过10吨垃圾',
-    image: logoImg4
+    image: eventImg4
   }
 ])
 
@@ -666,7 +742,7 @@ const volunteerStories = ref([
   {
     name: '张明',
     role: '支教志愿者',
-    avatar: logoImg8,
+    avatar: volunteerAvatar,
     excerpt: '在山区支教的一年让我明白了教育的真正意义',
     story: '去年我辞去城市工作，前往云南山区支教。那里的孩子们对知识的渴望让我深受感动。虽然条件艰苦，但看到他们一天天进步，我觉得一切付出都值得。',
     tags: ['教育', '山区', '长期'],
@@ -675,7 +751,7 @@ const volunteerStories = ref([
   {
     name: '李华',
     role: '医疗志愿者',
-    avatar: logoImg8,
+    avatar: volunteerAvatar,
     excerpt: '用我的专业知识帮助需要帮助的人',
     story: '作为一名医生，我每月都会参加敬老院的义诊活动。老人们常常因为经济原因无法及时就医，我们的服务对他们来说非常重要。',
     tags: ['医疗', '老人', '专业'],
@@ -684,7 +760,7 @@ const volunteerStories = ref([
   {
     name: '王芳',
     role: '环保志愿者',
-    avatar: logoImg8,
+    avatar: volunteerAvatar,
     excerpt: '保护环境是我们每个人的责任',
     story: '我带领团队每月组织一次环保活动，清理公园和河道的垃圾。最让我高兴的是看到越来越多的人加入我们，共同保护环境。',
     tags: ['环保', '团队', '社区'],
@@ -696,27 +772,101 @@ const volunteerStories = ref([
 <style scoped>
 /* 基础样式 */
 .charity-home {
+  --primary-color: #d16654;
+  --secondary-color: #f8b195;
+  --accent-color: #ffd166;
+  --text-color: #5a5a5a;
+  --light-text: #f8f1e9;
+  --bg-gradient: linear-gradient(to bottom, #f8f1e9 0%, #f1d4c3 100%);
+  --card-bg: rgba(255, 255, 255, 0.8);
+
+  /* 暗黑模式变量 */
+  --dark-primary: #e67e6d;
+  --dark-secondary: #f8c8b5;
+  --dark-accent: #ffdf80;
+  --dark-text: #e0e0e0;
+  --dark-bg: linear-gradient(to bottom, #2a2a2a 0%, #1a1a1a 100%);
+  --dark-card: rgba(40, 40, 40, 0.8);
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f8fafc;
-  color: #333;
+  background: var(--bg-gradient);
+  color: var(--text-color);
   transition: all 0.3s ease;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%23d16654"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'), auto;
 }
 
 .charity-home.dark-mode {
-  background-color: #121212;
-  color: #e0e0e0;
+  background: var(--dark-bg);
+  color: var(--dark-text);
 }
 
-/* 顶部导航栏 - 重新设计 */
+.charity-home a, .charity-home button {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%23f8b195"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'), pointer;
+}
+
+/* 爱心特效样式 */
+.hearts-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  pointer-events: none;
+  animation: float linear forwards;
+  transform: translateY(0);
+}
+
+/* 修正爱心形状 */
+.heart::before, .heart::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 52%;
+  height: 80%;
+  background: currentColor;
+  border-radius: 50px 50px 0 0;
+}
+
+.heart::before {
+  left: 0;
+  transform: rotate(-45deg);
+  transform-origin: 100% 100%;
+}
+
+.heart::after {
+  left: 50%;
+  transform: rotate(45deg);
+  transform-origin: 0 100%;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: var(--opacity);
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* 顶部导航栏 */
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: var(--card-bg);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
@@ -727,7 +877,7 @@ const volunteerStories = ref([
 }
 
 .dark-mode .header {
-  background-color: rgba(26, 26, 26, 0.95);
+  background-color: var(--dark-card);
   box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
 }
 
@@ -765,11 +915,11 @@ const volunteerStories = ref([
 .logo span {
   font-size: 20px;
   font-weight: bold;
-  color: #3a7bd5;
+  color: var(--primary-color);
 }
 
 .dark-mode .logo span {
-  color: #ff9a5a;
+  color: var(--dark-primary);
 }
 
 .nav-menu {
@@ -793,24 +943,35 @@ const volunteerStories = ref([
 }
 
 .donate-btn {
-  background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+  background: var(--primary-color);
+  color: var(--light-text);
   border: none;
   padding: 10px 20px;
   font-weight: bold;
   transition: all 0.3s ease;
+  animation: heartbeat 1.5s infinite;
 }
 
 .donate-btn:hover {
+  background: #c05a48;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(58, 123, 213, 0.3);
+  box-shadow: 0 4px 12px rgba(209, 102, 84, 0.3);
 }
 
 .dark-mode .donate-btn {
-  background: linear-gradient(135deg, #ff9a5a, #ff6e7f);
+  background: var(--dark-primary);
 }
 
 .dark-mode .donate-btn:hover {
-  box-shadow: 0 4px 12px rgba(255, 154, 90, 0.3);
+  box-shadow: 0 4px 12px rgba(230, 126, 109, 0.3);
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.1); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 /* 主要内容区域 */
@@ -826,13 +987,13 @@ const volunteerStories = ref([
   align-items: center;
   justify-content: space-between;
   padding: 80px 40px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  background: var(--bg-gradient);
   position: relative;
   overflow: hidden;
 }
 
 .dark-mode .hero-section {
-  background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
+  background: var(--dark-bg);
 }
 
 .hero-section::before {
@@ -855,27 +1016,28 @@ const volunteerStories = ref([
   font-size: 48px;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #3a7bd5;
+  color: var(--primary-color);
   line-height: 1.2;
 }
 
 .dark-mode .hero-title {
-  color: #ff9a5a;
+  color: var(--dark-primary);
 }
 
 .hero-subtitle {
   font-size: 20px;
   margin-bottom: 30px;
-  color: #555;
+  color: var(--text-color);
   line-height: 1.6;
 }
 
 .dark-mode .hero-subtitle {
-  color: #bbb;
+  color: var(--dark-text);
 }
 
 .hero-btn {
-  background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+  background: var(--primary-color);
+  color: var(--light-text);
   border: none;
   padding: 12px 30px;
   font-size: 18px;
@@ -884,16 +1046,17 @@ const volunteerStories = ref([
 }
 
 .hero-btn:hover {
+  background: #c05a48;
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(58, 123, 213, 0.3);
+  box-shadow: 0 8px 20px rgba(209, 102, 84, 0.3);
 }
 
 .dark-mode .hero-btn {
-  background: linear-gradient(135deg, #ff9a5a, #ff6e7f);
+  background: var(--dark-primary);
 }
 
 .dark-mode .hero-btn:hover {
-  box-shadow: 0 8px 20px rgba(255, 154, 90, 0.3);
+  box-shadow: 0 8px 20px rgba(230, 126, 109, 0.3);
 }
 
 .hero-image {
@@ -934,20 +1097,20 @@ const volunteerStories = ref([
 .section-header h2 {
   font-size: 36px;
   margin-bottom: 10px;
-  color: #3a7bd5;
+  color: var(--primary-color);
 }
 
 .dark-mode .section-header h2 {
-  color: #ff9a5a;
+  color: var(--dark-primary);
 }
 
 .section-header p {
   font-size: 18px;
-  color: #666;
+  color: var(--text-color);
 }
 
 .dark-mode .section-header p {
-  color: #aaa;
+  color: var(--dark-text);
 }
 
 .action-cards {
@@ -1039,16 +1202,16 @@ const volunteerStories = ref([
 
 .view-all {
   font-size: 16px;
-  color: #3a7bd5;
+  color: var(--primary-color);
   font-weight: bold;
 }
 
 .dark-mode .view-all {
-  color: #ff9a5a;
+  color: var(--dark-primary);
 }
 
 .view-all:hover {
-  color: #00d2ff;
+  color: var(--accent-color);
 }
 
 .events-container {
@@ -1063,12 +1226,12 @@ const volunteerStories = ref([
   padding: 10px 20px;
   overflow-x: auto;
   scroll-behavior: smooth;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .events-scroller::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 
 .event-card {
@@ -1194,12 +1357,12 @@ const volunteerStories = ref([
 }
 
 .scroll-btn:hover {
-  background-color: #3a7bd5;
+  background-color: var(--primary-color);
   color: white;
 }
 
 .dark-mode .scroll-btn:hover {
-  background-color: #ff9a5a;
+  background-color: var(--dark-primary);
 }
 
 .scroll-btn.left {
@@ -1227,13 +1390,13 @@ const volunteerStories = ref([
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   opacity: 0.9;
   z-index: 0;
 }
 
 .dark-mode .stats-bg {
-  background: linear-gradient(135deg, #ff9a5a 0%, #ff6e7f 100%);
+  background: linear-gradient(135deg, var(--dark-primary), var(--dark-secondary));
 }
 
 .stats-content {
@@ -1328,7 +1491,7 @@ const volunteerStories = ref([
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: var(--dot-color, #3a7bd5);
+  background-color: var(--dot-color, var(--primary-color));
   border: 3px solid white;
 }
 
@@ -1351,11 +1514,11 @@ const volunteerStories = ref([
 .timeline-content h4 {
   margin-top: 0;
   margin-bottom: 10px;
-  color: #3a7bd5;
+  color: var(--primary-color);
 }
 
 .dark-mode .timeline-content h4 {
-  color: #ff9a5a;
+  color: var(--dark-primary);
 }
 
 .timeline-content p {
@@ -1465,13 +1628,13 @@ const volunteerStories = ref([
 }
 
 .card-back {
-  background-color: #3a7bd5;
+  background-color: var(--primary-color);
   color: white;
   transform: rotateY(180deg);
 }
 
 .dark-mode .card-back {
-  background-color: #ff9a5a;
+  background-color: var(--dark-primary);
 }
 
 .story-card.flipped .card-front {
@@ -1488,11 +1651,11 @@ const volunteerStories = ref([
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 20px;
-  border: 3px solid #3a7bd5;
+  border: 3px solid var(--primary-color);
 }
 
 .dark-mode .story-card img {
-  border-color: #ff9a5a;
+  border-color: var(--dark-primary);
 }
 
 .story-card h3 {
@@ -1500,13 +1663,13 @@ const volunteerStories = ref([
 }
 
 .story-role {
-  color: #3a7bd5;
+  color: var(--primary-color);
   font-weight: bold;
   margin-bottom: 15px;
 }
 
 .dark-mode .story-role {
-  color: #ff9a5a;
+  color: var(--dark-primary);
 }
 
 .story-excerpt {
@@ -1543,7 +1706,7 @@ const volunteerStories = ref([
 /* 捐助呼吁 */
 .donation-call {
   padding: 100px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   text-align: center;
   color: white;
   position: relative;
@@ -1551,7 +1714,7 @@ const volunteerStories = ref([
 }
 
 .dark-mode .donation-call {
-  background: linear-gradient(135deg, #ff9a5a 0%, #ff6e7f 100%);
+  background: linear-gradient(135deg, var(--dark-primary), var(--dark-secondary));
 }
 
 .call-container {
@@ -1574,7 +1737,7 @@ const volunteerStories = ref([
 
 .pulse-btn {
   background-color: white;
-  color: #3a7bd5;
+  color: var(--primary-color);
   font-size: 18px;
   font-weight: bold;
   padding: 15px 40px;
@@ -1584,7 +1747,7 @@ const volunteerStories = ref([
 }
 
 .dark-mode .pulse-btn {
-  color: #ff9a5a;
+  color: var(--dark-primary);
 }
 
 .pulse-btn:hover {
@@ -1606,7 +1769,7 @@ const volunteerStories = ref([
 
 /* 页脚 */
 .footer {
-  background-color: #2c3e50;
+  background-color: #3d3d3d;
   color: white;
   padding-top: 60px;
 }

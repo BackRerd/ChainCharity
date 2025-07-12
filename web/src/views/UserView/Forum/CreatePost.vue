@@ -167,7 +167,15 @@ import MarkdownIt from 'markdown-it'
 import fileUploader from '@/utils/fileUploader'
 
 const router = useRouter()
-
+const getFileIcon = (fileType) =>{
+  if (!fileType) return 'el-icon-document'
+  if (fileType.startsWith('image/')) return 'el-icon-picture'
+  if (fileType.includes('pdf')) return 'el-icon-document'
+  if (fileType.includes('word')) return 'el-icon-document'
+  if (fileType.includes('excel')) return 'el-icon-document'
+  if (fileType.includes('zip') || fileType.includes('compressed')) return 'el-icon-folder'
+  return 'el-icon-document'
+}
 // Markdown渲染器
 const md = new MarkdownIt({
   html: true,
@@ -421,32 +429,51 @@ onMounted(() => {
   max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
+  background-color: #f8fafc; /* 柔和的背景色 */
 }
 
 .page-header-title {
   font-size: 18px;
   font-weight: 500;
+  color: #2c5282; /* 深蓝色标题 */
 }
 
 .post-form {
   margin-top: 20px;
   background-color: #fff;
-  padding: 20px;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  border-radius: 8px; /* 更大的圆角 */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* 更柔和的阴影 */
+  border: 1px solid #e2e8f0; /* 浅灰色边框 */
 }
 
 .editor-container {
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  transition: all 0.3s ease; /* 添加过渡效果 */
+}
+
+.editor-container:hover {
+  border-color: #4299e1; /* 悬停时边框变蓝 */
 }
 
 .editor-toolbar {
-  padding: 5px 10px;
-  border-bottom: 1px solid #dcdfe6;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e2e8f0;
   display: flex;
   justify-content: space-between;
-  background-color: #f5f7fa;
+  background-color: #f7fafc; /* 更浅的背景 */
+  border-radius: 6px 6px 0 0; /* 圆角与容器匹配 */
+}
+
+.editor-toolbar .el-button {
+  color: #4a5568; /* 深灰色图标 */
+  transition: all 0.2s ease;
+}
+
+.editor-toolbar .el-button:hover {
+  color: #3182ce; /* 悬停时变蓝 */
+  transform: scale(1.1); /* 轻微放大效果 */
 }
 
 .editor-textarea {
@@ -458,15 +485,26 @@ onMounted(() => {
   padding: 15px;
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', Arial, sans-serif;
   line-height: 1.6;
+  color: #2d3748; /* 深灰色文字 */
+  background-color: #fff;
 }
 
 .editor-preview {
   padding: 15px;
-  border-top: 1px dashed #eee;
+  border-top: 1px dashed #e2e8f0;
+  background-color: #f8fafc; /* 浅灰色背景 */
+  border-radius: 0 0 6px 6px;
+}
+
+.editor-preview h4 {
+  color: #2b6cb0; /* 蓝色标题 */
+  margin-bottom: 12px;
 }
 
 .markdown-content {
   word-break: break-word;
+  color: #4a5568; /* 中灰色正文 */
+  line-height: 1.7;
 }
 
 .markdown-content :deep(h1),
@@ -474,6 +512,7 @@ onMounted(() => {
 .markdown-content :deep(h3) {
   margin-top: 1em;
   margin-bottom: 0.5em;
+  color: #2c5282; /* 深蓝色标题 */
 }
 
 .markdown-content :deep(p) {
@@ -483,24 +522,38 @@ onMounted(() => {
 .markdown-content :deep(img) {
   max-width: 100%;
   height: auto;
+  border-radius: 4px; /* 图片圆角 */
 }
 
 .attachment-list {
   width: 100%;
+  background-color: #f7fafc; /* 浅灰色背景 */
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px dashed #cbd5e0; /* 虚线边框 */
 }
 
 .attachment-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px dashed #eee;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  transition: background-color 0.2s ease;
+}
+
+.attachment-item:hover {
+  background-color: #ebf8ff; /* 悬停时浅蓝色背景 */
 }
 
 .file-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+}
+
+.file-info .el-icon {
+  color: #4299e1; /* 蓝色图标 */
 }
 
 .file-name {
@@ -508,10 +561,81 @@ onMounted(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: #2d3748; /* 深灰色文件名 */
 }
 
 .file-size {
-  color: #999;
+  color: #718096; /* 浅灰色文件大小 */
   font-size: 12px;
+}
+
+/* 表单元素样式调整 */
+.el-form-item__label {
+  color: #4a5568; /* 中灰色标签 */
+  font-weight: 500;
+}
+
+.el-input :deep(.el-input__inner),
+.el-textarea :deep(.el-textarea__inner),
+.el-select :deep(.el-input__inner) {
+  border-color: #cbd5e0; /* 浅灰色边框 */
+  transition: all 0.3s ease;
+}
+
+.el-input :deep(.el-input__inner):focus,
+.el-textarea :deep(.el-textarea__inner):focus,
+.el-select :deep(.el-input__inner):focus {
+  border-color: #4299e1; /* 聚焦时蓝色边框 */
+  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2); /* 蓝色光晕 */
+}
+
+/* 按钮样式 */
+.el-button--primary {
+  background-color: #4299e1; /* 蓝色主按钮 */
+  border-color: #4299e1;
+}
+
+.el-button--primary:hover {
+  background-color: #3182ce; /* 深蓝色悬停 */
+  border-color: #3182ce;
+}
+
+.el-button {
+  transition: all 0.2s ease;
+}
+
+/* 分类选择器样式 */
+.el-select-dropdown__item.selected {
+  color: #4299e1; /* 蓝色选中项 */
+}
+
+/* 复选框样式 */
+.el-checkbox :deep(.el-checkbox__inner) {
+  border-color: #cbd5e0;
+}
+
+.el-checkbox :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
+  background-color: #4299e1;
+  border-color: #4299e1;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .create-post {
+    padding: 15px;
+  }
+
+  .post-form {
+    padding: 15px;
+  }
+
+  .editor-toolbar {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .file-name {
+    max-width: 200px;
+  }
 }
 </style>

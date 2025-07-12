@@ -63,6 +63,7 @@ body {
 }
 
 .app-sidebar {
+  width: 240px;
   background-color: #304156;
   transition: width 0.3s;
   box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);

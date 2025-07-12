@@ -97,7 +97,7 @@ const routes = [
         meta: { title: '我的受助' }
       },
       {
-        path: '/user/user/announcement',
+        path: 'announcement',
         name: 'UserAnnouncement',
         component: () => import('../views/UserView/UserAnnouncement.vue'),
         meta: { title: '最新公告' }
