@@ -1,5 +1,6 @@
 <template>
   <el-aside class="nav-bar" width="240px">
+    <ChatAI />
     <div class="logo-container" @click="goHome">
       <!--      <img src="@/assets/images/logo.png" alt="慈善Logo" class="logo" />-->
       <h2 class="org-name">感谢您的使用！</h2>
@@ -66,6 +67,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import ChatAI from '@/components/UserPage/ChatAI.vue'
 import {
   HomeFilled,
   Menu,
