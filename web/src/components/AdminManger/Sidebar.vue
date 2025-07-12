@@ -23,11 +23,11 @@
 <!--        <div class="hover-effect"></div>-->
 <!--      </el-menu-item>-->
 
-<!--      <el-menu-item index="/admin/settings" class="menu-item">-->
-<!--        <el-icon class="menu-icon"><Setting /></el-icon>-->
-<!--        <span class="menu-text">系统设置</span>-->
-<!--        <div class="hover-effect"></div>-->
-<!--      </el-menu-item>-->
+      <el-menu-item index="/admin/settings" class="menu-item">
+        <el-icon class="menu-icon"><Setting /></el-icon>
+        <span class="menu-text">系统设置</span>
+        <div class="hover-effect"></div>
+      </el-menu-item>
 
       <el-sub-menu index="activity" class="menu-item">
         <template #title>
@@ -128,13 +128,13 @@ const activeMenu = computed(() => route.path)
 
 <style scoped lang="scss">
 .nav-bar {
-  background: linear-gradient(to bottom, #f8f1e9 0%, #f1d4c3 100%);
-  color: #5a5a5a;
+  background: linear-gradient(to bottom, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%);
+  color: var(--sidebar-text);
   height: 100vh;
   position: sticky;
   top: 0;
   overflow-y: auto;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 2px 0 10px var(--sidebar-shadow);
   transition: all 0.3s ease;
   z-index: 998;
 }
@@ -144,14 +144,14 @@ const activeMenu = computed(() => route.path)
   align-items: center;
   justify-content: center;
   padding: 20px 15px;
-  background-color: rgba(209, 102, 84, 0.1);
+  background-color: var(--sidebar-active-bg);
   margin-bottom: 10px;
   transition: all 0.3s ease;
-  border-bottom: 1px solid rgba(209, 102, 84, 0.1);
+  border-bottom: 1px solid var(--sidebar-border);
 }
 
 .org-name {
-  color: #d16654;
+  color: var(--sidebar-active);
   font-size: 20px;
   font-weight: bold;
   margin: 0;
@@ -173,17 +173,17 @@ const activeMenu = computed(() => route.path)
   transition: all 0.3s ease;
   margin: 6px 10px;
   border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.3);
-  color: #5a5a5a;
+  background-color: var(--menu-item-bg);
+  color: var(--sidebar-text);
 
   &:hover {
-    background-color: rgba(209, 102, 84, 0.1) !important;
+    background-color: var(--sidebar-hover-bg) !important;
     transform: translateX(3px);
   }
 
   &.is-active {
-    background-color: rgba(209, 102, 84, 0.15) !important;
-    color: #d16654;
+    background-color: var(--sidebar-active-bg) !important;
+    color: var(--sidebar-active);
     font-weight: 500;
 
     &::before {
@@ -193,11 +193,11 @@ const activeMenu = computed(() => route.path)
       top: 0;
       height: 100%;
       width: 3px;
-      background-color: #d16654;
+      background-color: var(--menu-active-indicator);
     }
 
     .menu-icon {
-      color: #d16654;
+      color: var(--sidebar-icon);
     }
   }
 }
@@ -208,7 +208,7 @@ const activeMenu = computed(() => route.path)
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(209, 102, 84, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, var(--sidebar-hover-bg), transparent);
   transition: all 0.6s ease;
 }
 
@@ -219,7 +219,7 @@ const activeMenu = computed(() => route.path)
 .menu-icon {
   margin-right: 12px;
   font-size: 18px;
-  color: #d16654;
+  color: var(--sidebar-icon);
 }
 
 .menu-text {
@@ -228,61 +228,61 @@ const activeMenu = computed(() => route.path)
 
 .submenu-item {
   transition: all 0.3s ease;
-  background-color: rgba(255, 255, 255, 0.4) !important;
+  background-color: var(--submenu-item-bg) !important;
 
   &:hover {
-    background-color: rgba(209, 102, 84, 0.08) !important;
+    background-color: rgba(var(--sidebar-active), 0.08) !important;
     padding-left: 18px !important;
   }
 
   &.is-active {
-    background-color: rgba(209, 102, 84, 0.1) !important;
-    color: #d16654;
+    background-color: var(--sidebar-hover-bg) !important;
+    color: var(--sidebar-active);
   }
 
   .el-icon {
-    color: #d16654;
+    color: var(--sidebar-icon);
   }
 }
 
 .donation-counter {
   margin: 25px 15px;
   padding: 18px;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: var(--menu-item-bg);
   border-radius: 8px;
   text-align: center;
   animation: fadeIn 1s ease;
-  border: 1px solid rgba(209, 102, 84, 0.2);
+  border: 1px solid var(--sidebar-border);
 }
 
 .counter-title {
   font-size: 15px;
-  color: #5a5a5a;
+  color: var(--sidebar-text);
   margin-bottom: 8px;
 }
 
 .counter-number {
   font-size: 24px;
   font-weight: bold;
-  color: #d16654;
+  color: var(--sidebar-active);
   margin-bottom: 5px;
 
   span {
     font-size: 14px;
     margin-left: 4px;
-    color: #888;
+    color: var(--text-light-gray);
   }
 }
 
 .counter-sub {
   font-size: 13px;
-  color: #888;
+  color: var(--text-light-gray);
   margin-bottom: 15px;
 }
 
 .progress-bar {
   height: 5px;
-  background-color: rgba(209, 102, 84, 0.1);
+  background-color: var(--progress-bg);
   border-radius: 3px;
   margin: 12px 0;
   overflow: hidden;
@@ -290,14 +290,14 @@ const activeMenu = computed(() => route.path)
 
 .progress {
   height: 100%;
-  background: linear-gradient(to right, #f8b195, #d16654);
+  background: linear-gradient(to right, var(--progress-start), var(--progress-end));
   border-radius: 3px;
   transition: width 1s ease;
 }
 
 .counter-goal {
   font-size: 12px;
-  color: #888;
+  color: var(--text-light-gray);
 }
 
 @keyframes fadeIn {
@@ -310,11 +310,11 @@ const activeMenu = computed(() => route.path)
 }
 
 .nav-bar::-webkit-scrollbar-thumb {
-  background-color: rgba(209, 102, 84, 0.3);
+  background-color: var(--scrollbar-thumb);
   border-radius: 3px;
 
   &:hover {
-    background-color: rgba(209, 102, 84, 0.5);
+    background-color: var(--scrollbar-thumb-hover);
   }
 }
 </style>

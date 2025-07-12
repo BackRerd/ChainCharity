@@ -85,17 +85,16 @@ const userAvatar = computed(() => {
       'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
 })
 </script>
-
-<style scoped lang="scss">
+<style scoped>
 .main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #ff7e36, #ff5e3a); /* 橙色渐变 */
-  color: white;
+  background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+  color: var(--text-white);
   padding: 0 24px;
   height: 64px;
-  box-shadow: 0 2px 15px rgba(255, 94, 58, 0.3);
+  box-shadow: 0 2px 15px var(--primary-shadow);
   position: relative;
   z-index: 999;
 }
@@ -111,19 +110,20 @@ const userAvatar = computed(() => {
   align-items: center;
   cursor: pointer;
   transition: all 0.3s ease;
+}
 
-  &:hover {
-    transform: scale(1.03);
-    .logo-icon {
-      animation: pulse 0.8s ease;
-    }
-  }
+.logo-container:hover {
+  transform: scale(1.03);
+}
+
+.logo-container:hover .logo-icon {
+  animation: pulse 0.8s ease;
 }
 
 .logo-icon {
   font-size: 26px;
   margin-right: 8px;
-  color: #ffeb3b; /* 黄色爱心 */
+  color: var(--text-yellow);
 }
 
 .logo-text {
@@ -135,20 +135,20 @@ const userAvatar = computed(() => {
 
 .breadcrumb {
   font-size: 15px;
+}
 
-  :deep(.el-breadcrumb__inner) {
-    color: rgba(255, 255, 255, 0.95) !important;
-    transition: all 0.2s ease;
+.breadcrumb :deep(.el-breadcrumb__inner) {
+  color: rgba(255, 255, 255, 0.95) !important;
+  transition: all 0.2s ease;
+}
 
-    &:hover {
-      color: #fffacd !important; /* 浅黄色悬停 */
-      text-decoration: underline;
-    }
-  }
+.breadcrumb :deep(.el-breadcrumb__inner:hover) {
+  color: var(--text-light-yellow) !important;
+  text-decoration: underline;
+}
 
-  :deep(.el-breadcrumb__separator) {
-    color: rgba(255, 255, 255, 0.8) !important;
-  }
+.breadcrumb :deep(.el-breadcrumb__separator) {
+  color: var(--breadcrumb-separator) !important;
 }
 
 .header-right {
@@ -164,24 +164,25 @@ const userAvatar = computed(() => {
   padding: 6px 12px;
   border-radius: 24px;
   transition: all 0.3s ease;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--user-info-bg);
+}
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    .user-arrow {
-      transform: translateY(3px);
-    }
-  }
+.user-info:hover {
+  background-color: var(--user-info-hover);
+}
+
+.user-info:hover .user-arrow {
+  transform: translateY(3px);
 }
 
 .user-avatar {
-  border: 2px solid rgba(255, 235, 59, 0.5); /* 黄色边框 */
+  border: 2px solid var(--avatar-border);
   transition: all 0.3s ease;
+}
 
-  &:hover {
-    transform: scale(1.1);
-    border-color: rgba(255, 235, 59, 0.8);
-  }
+.user-avatar:hover {
+  transform: scale(1.1);
+  border-color: var(--avatar-border-hover);
 }
 
 .user-name {
@@ -193,14 +194,14 @@ const userAvatar = computed(() => {
 .user-arrow {
   transition: all 0.3s ease;
   font-size: 14px;
-  color: #ffeb3b;
+  color: var(--text-yellow);
 }
 
 .user-dropdown {
   border: none;
   padding: 8px 0;
-  background-color: #fff;
-  box-shadow: 0 5px 20px rgba(255, 126, 54, 0.2);
+  background-color: var(--dropdown-bg);
+  box-shadow: 0 5px 20px var(--dropdown-shadow);
   border-radius: 12px;
   overflow: hidden;
   margin-top: 5px;
@@ -210,52 +211,52 @@ const userAvatar = computed(() => {
   display: flex;
   align-items: center;
   padding: 10px 20px;
-  color: #666;
+  color: var(--text-gray);
   transition: all 0.2s ease;
+}
 
-  &:hover {
-    background-color: #fff5e6;
-    color: #ff7e36;
+.dropdown-item:hover {
+  background-color: var(--dropdown-item-hover);
+  color: var(--dropdown-item-hover-text);
+}
 
-    .el-icon {
-      color: #ff7e36;
-    }
-  }
+.dropdown-item:hover .el-icon {
+  color: var(--dropdown-item-hover-text);
+}
 
-  .el-icon {
-    margin-right: 10px;
-    font-size: 17px;
-    color: #ff9d4d;
-  }
+.dropdown-item .el-icon {
+  margin-right: 10px;
+  font-size: 17px;
+  color: var(--dropdown-icon);
 }
 
 .donate-btn {
   display: flex;
   align-items: center;
   padding: 10px 20px;
-  background-color: #ff4757; /* 鲜艳红色 */
-  color: white;
+  background-color: var(--donate-btn-bg);
+  color: var(--text-white);
   border-radius: 24px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   font-size: 15px;
   font-weight: 600;
-  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+  box-shadow: 0 4px 15px var(--donate-btn-shadow);
+}
 
-  &:hover {
-    background-color: #ff2d42;
-    transform: translateY(-3px);
-    box-shadow: 0 7px 20px rgba(255, 71, 87, 0.5);
-  }
+.donate-btn:hover {
+  background-color: var(--donate-btn-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px var(--donate-btn-shadow-hover);
+}
 
-  &:active {
-    transform: translateY(-1px);
-  }
+.donate-btn:active {
+  transform: translateY(-1px);
+}
 
-  .el-icon {
-    margin-right: 8px;
-    font-size: 18px;
-  }
+.donate-btn .el-icon {
+  margin-right: 8px;
+  font-size: 18px;
 }
 
 @keyframes pulse {

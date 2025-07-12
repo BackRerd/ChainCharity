@@ -1,0 +1,58 @@
+:root {
+  /* 主色调 */
+  --primary-gradient-start: #ff7e36;
+  --primary-gradient-end: #ff5e3a;
+  --primary-shadow: rgba(255, 94, 58, 0.3);
+
+  /* 侧边栏颜色 */
+  --sidebar-bg-start: #f8f1e9;
+  --sidebar-bg-end: #f1d4c3;
+  --sidebar-shadow: rgba(0, 0, 0, 0.05);
+  --sidebar-text: #5a5a5a;
+  --sidebar-active: #d16654;
+  --sidebar-active-bg: rgba(209, 102, 84, 0.15);
+  --sidebar-hover-bg: rgba(209, 102, 84, 0.1);
+  --sidebar-border: rgba(209, 102, 84, 0.1);
+  --sidebar-icon: #d16654;
+
+  /* 菜单项颜色 */
+  --menu-item-bg: rgba(255, 255, 255, 0.3);
+  --submenu-item-bg: rgba(255, 255, 255, 0.4);
+  --menu-active-indicator: #d16654;
+
+  /* 进度条颜色 */
+  --progress-start: #f8b195;
+  --progress-end: #d16654;
+  --progress-bg: rgba(209, 102, 84, 0.1);
+
+  /* 文字颜色 */
+  --text-white: white;
+  --text-light-yellow: #fffacd;
+  --text-yellow: #ffeb3b;
+  --text-gray: #666;
+  --text-light-gray: #888;
+
+  /* 按钮颜色 */
+  --donate-btn-bg: #ff4757;
+  --donate-btn-hover: #ff2d42;
+  --donate-btn-shadow: rgba(255, 71, 87, 0.4);
+  --donate-btn-shadow-hover: rgba(255, 71, 87, 0.5);
+
+  /* 用户界面颜色 */
+  --user-info-bg: rgba(255, 255, 255, 0.1);
+  --user-info-hover: rgba(255, 255, 255, 0.2);
+  --avatar-border: rgba(255, 235, 59, 0.5);
+  --avatar-border-hover: rgba(255, 235, 59, 0.8);
+
+  /* 下拉菜单颜色 */
+  --dropdown-bg: #fff;
+  --dropdown-shadow: rgba(255, 126, 54, 0.2);
+  --dropdown-item-hover: #fff5e6;
+  --dropdown-icon: #ff9d4d;
+  --dropdown-item-hover-text: #ff7e36;
+
+  /* 其他 */
+  --breadcrumb-separator: rgba(255, 255, 255, 0.8);
+  --scrollbar-thumb: rgba(209, 102, 84, 0.3);
+  --scrollbar-thumb-hover: rgba(209, 102, 84, 0.5);
+}

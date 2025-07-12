@@ -74,10 +74,10 @@ defineEmits(['toggle-collapse'])
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, #fff 0%, #fff9f5 100%);
-  box-shadow: 0 2px 10px rgba(255, 152, 0, 0.1);
+  background: linear-gradient(135deg, var(--text-white) 0%, var(--sidebar-bg-start) 100%);
+  box-shadow: 0 2px 10px var(--primary-shadow);
   padding: 0 20px;
-  border-bottom: 1px solid #ffe0b2;
+  border-bottom: 1px solid var(--sidebar-border);
 }
 
 .header-left {
@@ -95,23 +95,23 @@ defineEmits(['toggle-collapse'])
 .header-title {
   font-size: 18px;
   font-weight: 600;
-  color: #e65100; /* 深橙色 */
+  color: var(--sidebar-active);
   letter-spacing: 0.5px;
 }
 
 .header-subtitle {
   font-size: 12px;
-  color: #fb8c00; /* 浅橙色 */
+  color: var(--sidebar-icon);
   opacity: 0.8;
 }
 
 .collapse-btn {
-  border-color: #ffcc80;
-  color: #e65100;
+  border-color: var(--sidebar-border);
+  color: var(--sidebar-active);
 }
 
 .collapse-btn:hover {
-  background-color: #ffe0b2;
+  background-color: var(--sidebar-hover-bg);
 }
 
 .user-info {
@@ -124,11 +124,11 @@ defineEmits(['toggle-collapse'])
 }
 
 .user-info:hover {
-  background-color: #ffecb3;
+  background-color: var(--sidebar-hover-bg);
 }
 
 .user-avatar {
-  background-color: #fb8c00;
+  background-color: var(--sidebar-icon);
 }
 
 .user-details {
@@ -140,39 +140,40 @@ defineEmits(['toggle-collapse'])
 .user-name {
   font-size: 14px;
   font-weight: 500;
-  color: #e65100;
+  color: var(--sidebar-active);
 }
 
 .user-role {
   font-size: 12px;
-  color: #ffa726;
+  color: var(--sidebar-icon);
 }
 
 /* 下拉菜单样式 */
 .user-dropdown {
   border-radius: 8px;
-  border: 1px solid #ffcc80;
-  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.15);
+  border: 1px solid var(--sidebar-border);
+  box-shadow: 0 4px 12px var(--primary-shadow);
 }
 
 .dropdown-item {
   padding: 8px 16px;
-  color: #e65100;
+  color: var(--sidebar-active);
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 .dropdown-item:hover {
-  background-color: #ffecb3;
-  color: #bf360c;
+  background-color: var(--sidebar-hover-bg);
+  color: var(--sidebar-active);
 }
 
 .exit-item {
-  color: #d84315;
+  color: var(--donate-btn-bg);
 }
 
 .exit-item:hover {
-  background-color: #ffccbc;
+  background-color: var(--donate-btn-hover);
+  color: var(--text-white);
 }
 </style>
