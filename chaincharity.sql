@@ -179,6 +179,7 @@ CREATE TABLE `user_profiles` (
                                  `family_members` int(11) NULL COMMENT '家庭成员数',
                                  `monthly_income` decimal(10,2) NULL COMMENT '月收入',
                                  `poverty_level` enum('low','medium','high','extreme') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+                                 `file_location` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '文件存储位置(受助者详细信息)',
 
     -- 企业专属字段
                                  `legal_representative` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '企业法人',

@@ -29,7 +29,7 @@
             </el-dropdown-item>
             <el-dropdown-item class="dropdown-item" @click="navigateToSettings">
               <el-icon><Setting /></el-icon>
-              <span>账户设置</span>
+              <span>系统设置</span>
             </el-dropdown-item>
             <el-dropdown-item divided class="dropdown-item" @click="exit">
               <el-icon><SwitchButton /></el-icon>
@@ -71,11 +71,11 @@ const navigateToDonate = () => {
 }
 
 const navigateToProfile = () => {
-  router.push('/profile')
+  router.push('/user/profile')
 }
 
 const navigateToSettings = () => {
-  router.push('/settings')
+  router.push('/user')
 }
 
 const currentRouteName = computed(() => route.meta.title || '')

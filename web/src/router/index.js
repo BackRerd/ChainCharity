@@ -8,6 +8,7 @@ import EditPost from "@/views/UserView/Forum/EditPost.vue";
 import CreatePost from "@/views/UserView/Forum/CreatePost.vue";
 import PostDetail from "@/views/UserView/Forum/PostDetail.vue";
 import ForumHome from "@/views/UserView/Forum/ForumHome.vue";
+import UsersPage from "@/views/AdminPage/UserMnager/UsersPage.vue";
 
 
 const routes = [
@@ -38,6 +39,12 @@ const routes = [
         name: 'Home',
         component: () => import('../views/UserView/Home/Index.vue'),
         meta: { title: '慈善首页' }
+      },
+      {
+        path: 'profile',
+        name: 'profile',
+        component: () => import('@/views/Profile.vue'),
+        meta: { title: '修改个人信息' }
       },
       {
         path: 'forum',
@@ -113,6 +120,11 @@ const routes = [
       {
         path: '',
         redirect: {name: 'Dashboard'},
+      },
+      {
+        path: 'users',
+        name: 'Users',
+        component: UsersPage
       },
       {
         path: 'dashboard',

@@ -19,7 +19,7 @@
 
 <!--      <el-menu-item index="/admin/beneficiaries" class="menu-item">-->
 <!--        <el-icon class="menu-icon"><UserFilled /></el-icon>-->
-<!--        <span class="menu-text">受助者管理</span>-->
+<!--        <span class="menu-text">管理员信息管理</span>-->
 <!--        <div class="hover-effect"></div>-->
 <!--      </el-menu-item>-->
 
@@ -72,7 +72,7 @@
           <el-icon class="menu-icon"><User /></el-icon>
           <span class="menu-text">其他管理</span>
         </template>
-        <el-menu-item index="/admin/volunteers" class="submenu-item">
+        <el-menu-item index="/admin/users" class="submenu-item">
           <el-icon><Avatar /></el-icon>
           <span>用户管理</span>
         </el-menu-item>

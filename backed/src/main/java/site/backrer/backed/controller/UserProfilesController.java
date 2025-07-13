@@ -13,7 +13,6 @@ import site.backrer.backed.utils.Result;
 public class UserProfilesController {
     @Autowired
     private UserProfilesService userProfilesService;
-
     @PostMapping
     public Result addUser(@RequestBody UserProfiles user) {
         userProfilesService.save(user);
@@ -32,6 +31,7 @@ public class UserProfilesController {
         return Result.success(user);
     }
 
+
     @GetMapping("/{id}")
     public Result getUserById(@PathVariable Integer id) {
         UserProfiles user = userProfilesService.getUserProfileByUserIs(id);
@@ -40,6 +40,7 @@ public class UserProfilesController {
         }
         return Result.error("404", "用户不存在");
     }
+
 
     @GetMapping("/page")
     public Result getUserByPage(@RequestParam(defaultValue = "1") int page,
