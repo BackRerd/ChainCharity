@@ -84,6 +84,7 @@ const fetchItemDistributions = async () => {
     })
 
     if (response.data && response.data.data) {
+      console.log(response)
       itemDistributions.value = response.data.data.records || []
       itemPage.value.total = response.data.data.total || 0
     }

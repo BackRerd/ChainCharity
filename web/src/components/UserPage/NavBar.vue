@@ -35,7 +35,7 @@
         </el-menu-item>
         <el-menu-item index="/user/forum" class="submenu-item">
           <el-icon><Warning /></el-icon>
-          <span>紧急救助</span>
+          <span>论坛查看</span>
         </el-menu-item>
       </el-sub-menu>
 

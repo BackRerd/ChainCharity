@@ -41,6 +41,10 @@ public class DistributionController {
         distributionService.removeById(id);
         return Result.success();
     }
+    @GetMapping("/status/{id}")
+    public Result getUserStatus(@PathVariable Integer id) {
+        return Result.success(distributionService.getUserStatus(id));
+    }
 
     @PutMapping
     public Result updateDistribution(@RequestBody Distributions distribution) {
@@ -68,6 +72,7 @@ public class DistributionController {
         Page<Distributions> pageInfo = new Page<>(page, size);
         return Result.success(distributionService.page(pageInfo,queryWrapper));
     }
+
     @GetMapping("/statistics")
     public Result getDistributionStatistics() {
         Map<String, Object> stats = distributionService.getDistributionStatistics();

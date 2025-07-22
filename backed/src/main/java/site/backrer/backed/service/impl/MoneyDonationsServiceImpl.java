@@ -3,7 +3,6 @@ package site.backrer.backed.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
-import site.backrer.backed.entity.MoneyDonateStats;
 import site.backrer.backed.entity.MoneyDonations;
 import site.backrer.backed.service.MoneyDonationsService;
 import site.backrer.backed.mapper.MoneyDonationsMapper;
@@ -23,6 +22,11 @@ public class MoneyDonationsServiceImpl extends ServiceImpl<MoneyDonationsMapper,
     implements MoneyDonationsService{
     @Resource
     private MoneyDonationsMapper moneyDonationsMapper;
+
+    @Override
+    public List<MoneyDonations> getByUserID(Integer userID){
+        return lambdaQuery().eq(MoneyDonations::getDonorId, userID).list();
+    }
 
     @Override
     public BigDecimal amountSum() {

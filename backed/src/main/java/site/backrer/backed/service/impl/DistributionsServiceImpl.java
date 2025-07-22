@@ -1,12 +1,17 @@
 package site.backrer.backed.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
 import site.backrer.backed.entity.Distributions;
 import site.backrer.backed.service.DistributionsService;
 import site.backrer.backed.mapper.DistributionsMapper;
 import org.springframework.stereotype.Service;
+import site.backrer.backed.service.ItemDonationsService;
+import site.backrer.backed.service.MoneyDonationsService;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -18,6 +23,11 @@ import java.util.*;
 @Service
 public class DistributionsServiceImpl extends ServiceImpl<DistributionsMapper, Distributions>
     implements DistributionsService{
+
+    @Resource
+    private ItemDonationsService itemDonationsService;
+    @Resource
+    private MoneyDonationsService moneyDonationsService;
 
     @Override
     public Map<String, Object> getDistributionStatistics() {
@@ -74,6 +84,35 @@ public class DistributionsServiceImpl extends ServiceImpl<DistributionsMapper, D
 
         return stats;
     }
+
+    @Override
+    public List<Distributions> getByMoneyId(int moneyId) {
+        return lambdaQuery().eq(Distributions::getMoneyDonationId, moneyId).list();
+    }
+
+    @Override
+    public List<Distributions> getByItemId(int itemId) {
+        return lambdaQuery().eq(Distributions::getItemDonationId, itemId).list();
+    }
+    @Override
+    public List<BigDecimal> getUserStatus(int userId){
+        LambdaQueryChainWrapper<Distributions> approved = lambdaQuery().eq(Distributions::getRecipientId, userId).eq(Distributions::getApprovalStatus, "approved");
+        List<BigDecimal> list = new ArrayList<>();
+        List<Distributions> item = approved.eq(Distributions::getDonationType, "item").list();
+        List<Distributions> money = approved.eq(Distributions::getDonationType, "money").list();
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        for (Distributions d : money) {
+            totalAmount.add(d.getDistributedAmount());
+        }
+        list.add(totalAmount);
+        totalAmount = BigDecimal.ZERO;
+        for (Distributions d : item) {
+            totalAmount.add(BigDecimal.valueOf(d.getDistributedQuantity()));
+        }
+        list.add(totalAmount);
+        return list;
+    }
+
 }
 
 

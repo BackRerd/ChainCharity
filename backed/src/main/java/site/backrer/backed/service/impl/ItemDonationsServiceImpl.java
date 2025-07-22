@@ -7,6 +7,7 @@ import site.backrer.backed.mapper.ItemDonationsMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +25,10 @@ public class ItemDonationsServiceImpl extends ServiceImpl<ItemDonationsMapper, I
         stats.put("approvedDonations", this.lambdaQuery().eq(ItemDonations::getApprovalStatus, "approved").count());
         stats.put("pendingDonations", this.lambdaQuery().eq(ItemDonations::getApprovalStatus, "pending").count());
         return stats;
+    }
+    @Override
+    public List<ItemDonations> getByUserID(Integer userID){
+        return lambdaQuery().eq(ItemDonations::getDonationId, userID).list();
     }
 }
 

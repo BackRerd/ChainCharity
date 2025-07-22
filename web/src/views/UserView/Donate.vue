@@ -151,6 +151,7 @@
                       </el-tag>
                     </template>
                   </el-table-column>
+                  <el-table-column prop="recipientIds" label="分发人员ID" width="150" />
                   <el-table-column prop="donationTime" label="捐赠时间" width="180">
                     <template #default="{ row }">
                       {{ formatDate(row.donationTime) }}
@@ -181,11 +182,13 @@
                       </el-tag>
                     </template>
                   </el-table-column>
+                  <el-table-column prop="recipientIds" label="分配人员ID" width="120" />
                   <el-table-column prop="donationTime" label="捐赠时间" width="180">
                     <template #default="{ row }">
                       {{ formatDate(row.donationTime) }}
                     </template>
                   </el-table-column>
+
                 </el-table>
                 <el-pagination
                     v-model:current-page="moneyPage.current"
@@ -215,7 +218,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import {ref, reactive, onMounted, computed} from 'vue'
 import { ElMessage } from 'element-plus'
 import axios from 'axios'
 
@@ -360,7 +363,7 @@ const fetchItemRecords = async () => {
   if (!userId.value) return
 
   try {
-    const response = await axios.get('/item-donations/page', {
+    const response = await axios.get('/item-donations/page-i', {
       params: {
         page: itemPage.current,
         size: itemPage.size,
@@ -369,19 +372,63 @@ const fetchItemRecords = async () => {
     })
 
     if (response.data.code === "200") {
-      itemRecords.value = response.data.data.records
-      itemPage.total = response.data.data.total
+      itemRecords.value = processData({
+        page: response.data.data.page,
+        distributions: response.data.data.distributions
+      }).page.records
+      itemPage.total = response.data.data.page.total
     }
   } catch (error) {
     ElMessage.error('获取物品捐赠记录失败')
   }
 }
+const processData = (data) => {
+  const { page, distributions } = data
+
+  const newRecords = page.records.map(record => ({
+    ...record,
+    recipientIds: getRecipientIdsByDonationId(distributions, record.donationId)
+  }))
+
+  return {
+    ...data,
+    page: {
+      ...page,
+      records: newRecords
+    }
+  }
+}
+// 普通函数：建立 donationId -> recipientIds 的映射
+const buildRecipientIdMap = (distributions) => {
+  const map = {};
+  distributions.forEach((dist) => {
+    const donationId = Object.keys(dist)[0];
+    map[donationId] = dist[donationId].map((d) => d.recipientId);
+  });
+  return map;
+};
+
+const getRecipientIdsByDonationId = (distributions, donationId) => {
+  const map = buildRecipientIdMap(distributions);
+  const recipientIds = map[donationId] || [];
+
+  // 去重处理（使用 Set 去除重复项）
+  const uniqueRecipientIds = [...new Set(recipientIds)];
+
+  if (uniqueRecipientIds.length === 0) {
+    return "未分配";
+  } else if (uniqueRecipientIds.length === 1) {
+    return uniqueRecipientIds[0].toString();
+  } else {
+    return uniqueRecipientIds.join(",");
+  }
+};
 
 const fetchMoneyRecords = async () => {
   if (!userId.value) return
 
   try {
-    const response = await axios.get('/money-donations/page', {
+    const response = await axios.get('/money-donations/page-i', {
       params: {
         page: moneyPage.current,
         size: moneyPage.size,
@@ -390,8 +437,13 @@ const fetchMoneyRecords = async () => {
     })
 
     if (response.data.code === "200") {
-      moneyRecords.value = response.data.data.records
-      moneyPage.total = response.data.data.total
+      console.log(response.data.data)
+      moneyRecords.value = moneyRecords.value = processData({
+        page: response.data.data.page,
+        distributions: response.data.data.distributions
+      }).page.records
+      console.log(moneyRecords.value)
+      moneyPage.total = response.data.data.page.total
     }
   } catch (error) {
     ElMessage.error('获取资金捐赠记录失败')

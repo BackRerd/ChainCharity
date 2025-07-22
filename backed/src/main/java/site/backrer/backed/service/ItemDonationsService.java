@@ -3,6 +3,7 @@ package site.backrer.backed.service;
 import site.backrer.backed.entity.ItemDonations;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,4 +13,6 @@ import java.util.Map;
 */
 public interface ItemDonationsService extends IService<ItemDonations> {
     Map<String, Object> getStats();
+
+    List<ItemDonations> getByUserID(Integer userID);
 }

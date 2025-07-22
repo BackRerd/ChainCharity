@@ -13,17 +13,23 @@ public class GlobalCorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOriginPatterns(
-                                "http://cubeserver.w1.luyouxia.net",
-                                "http://localhost:*",
-                                "http://127.0.0.1:*",
-                                "http://110.42.36.248:*"
-                        ).allowedMethods("*")
+                registry.addMapping("/**").
+                        allowedOriginPatterns("*")  // 允许所有来源
+                        .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true)
                         .maxAge(3600);
             }
         };
     }
+//    allowedOriginPatterns(
+//                                "http://cubeserver.w1.luyouxia.net",
+//                                        "http://localhost:*",
+//                                        "http://127.0.0.1:*",
+//                                        "http://110.42.36.248:*",
+//                                        "http://192.168.1.103:*",
+//                                        "http://0.0.0.0:*",
+//                                        "https://localhost:*",
+//                                        "https://127.0.0.1:*"
+//    )
 }
